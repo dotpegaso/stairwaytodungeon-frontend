@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "js": {
+      "extends": "react-app"
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "accessor-pairs": "error",
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "import/prefer-default-export": "off",
+    "react/no-unused-prop-types": "error",
+    "react/require-default-props": "error",
+    "react/default-props-match-prop-types": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-debugger": "off",
+    "no-unused-vars": "warn"
+  }
+}
