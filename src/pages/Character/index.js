@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { getLevelByExperienceCrystals, diceRoll } from '../../utils'
 import * as S from './styles'
 
-const socket = io('https://stairwaytodungeon-socket.herokuapp.com')
+const socket = io('https://stairwaytodungeon-socket.herokuapp.com:3000')
 
 const Character = ({ location }) => {
   const [diceResult, setDiceResult] = useState()
