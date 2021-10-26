@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from '@reach/router'
 import _ from 'lodash'
+import { useNavigate } from '@reach/router'
 const RandomOrg = require('random-org')
+
+import { Loading } from '../../components'
 
 import {
   pointsToAttributes,
   getGoldPieces,
   getOccupation,
   getHitPointsByClass,
+  getCharacterDescription,
   api
 } from '../../utils'
+
+import * as S from './styles'
 
 const random = new RandomOrg({
   apiKey: process.env.REACT_APP_RANDOM_ORG_API_KEY
 })
 
-import * as S from './styles'
-
 const classOptions = [
   { value: 'cleric', description: 'Clérigo(a)' },
   { value: 'fighter', description: 'Guerreiro(a)' },
-  { value: 'magic-user', description: 'Usuário(a) de Magia' },
+  { value: 'magic-user', description: 'Mago(a)' },
   { value: 'thief', description: 'Ladino(a)' },
   { value: 'dwarf', description: 'Anão/Anã' },
   { value: 'elf', description: 'Elfo(a)' },
@@ -35,9 +38,16 @@ const CreateCharacter = ({ location }) => {
   const [characterName, setCharacterName] = useState()
   const [characterClass, setCharacterClass] = useState()
   const [characterMotivation, setCharacterMotivation] = useState()
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true)
   const navigate = useNavigate()
 
-  const { player_id } = location.state
+  const { player_id } = _.defaultTo(_.get(location, 'state'), {})
+
+  useEffect(() => {
+    if (_.isNil(player_id)) {
+      navigate('/')
+    }
+  }, [player_id, navigate])
 
   useEffect(() => {
     random
@@ -91,24 +101,25 @@ const CreateCharacter = ({ location }) => {
     initCharacter()
   }, [attributes])
 
-  function renderCharacterOptions() {
-    if (_.isEmpty(characterOptions)) {
-      return 'Carregando...'
+  useEffect(() => {
+    if (!_.isEmpty(characterOptions)) {
+      setShowLoadingScreen(false)
     }
+  }, [characterOptions])
 
+  if (showLoadingScreen) {
+    return <Loading>Gerando opções de personagens...</Loading>
+  }
+
+  function renderCharacterOptions() {
     return characterOptions.map((character, index) => (
       <S.CharacterCard
         onClick={() => setSelectedCharacter(character)}
         key={index}>
-        <p>força: {character.strength}</p>
-        <p>destreza: {character.dexterity}</p>
-        <p>constuição: {character.constitution}</p>
-        <p>inteligência: {character.intelligence}</p>
-        <p>sabedoria: {character.wisdom}</p>
-        <p>carisma: {character.charisma}</p>
-        <p>ocupação: {character.occupation}</p>
-        <p>ouro: {character.gold_pieces}</p>
-        <p>armadura: {character.armor_class}</p>
+        {getCharacterDescription(character).map((description, index) => (
+          <S.ListItem key={index}>{description};</S.ListItem>
+        ))}
+        <S.ListItem>{`Carrega ${character.gold_pieces} moedas de ouro`}</S.ListItem>
       </S.CharacterCard>
     ))
   }
@@ -138,39 +149,7 @@ const CreateCharacter = ({ location }) => {
     })
   }
 
-  return (
-    <S.Container>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <input
-          placeholder="nome"
-          onChange={({ target }) => setCharacterName(target.value)}
-          value={characterName}
-          required
-        />
-        <select
-          value={characterClass}
-          onChange={({ target }) => setCharacterClass(target.value)}
-          required>
-          <option value="" disabled selected>
-            Classe
-          </option>
-          {classOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.description}
-            </option>
-          ))}
-        </select>
-        {renderCharacterOptions()}
-        <input
-          placeholder="motivação"
-          onChange={({ target }) => setCharacterMotivation(target.value)}
-          value={characterMotivation}
-          required
-        />
-        <button type="submit">Criar Personagem</button>
-      </form>
-    </S.Container>
-  )
+  return <S.Container>{renderCharacterOptions()}</S.Container>
 }
 
 CreateCharacter.propTypes = {

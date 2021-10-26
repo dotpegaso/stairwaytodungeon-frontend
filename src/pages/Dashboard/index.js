@@ -1,47 +1,82 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
+
 import { useNavigate } from '@reach/router'
-import { api } from '../../utils'
+import { api, getLevelByExperienceCrystals, parseClass } from '../../utils'
+import { Anchor, Loading } from '../../components'
 
 import * as S from './styles'
 
+import iconAdd from '../../assets/images/icon_add.svg'
+
 const Dashboard = ({ location }) => {
   const [characterList, setCharacterList] = useState([])
+  const [loadingCharacterList, setLoadingCharacterList] = useState(true)
   const navigate = useNavigate()
-  const { id, avatar } = location.state.response
+
+  const { id, avatar } = _.defaultTo(_.get(location, 'state.response'), {})
 
   useEffect(() => {
+    if (_.isNil(id)) {
+      navigate('/')
+    }
+
     api({ method: 'GET', url: `characters?player_id=${id}` }).then(
       (response) => {
         setCharacterList(response)
+        setLoadingCharacterList(false)
       }
     )
-  }, [id])
+  }, [id, navigate])
+
+  function renderCharacterList() {
+    if (_.isEmpty(characterList) && loadingCharacterList) {
+      return <Loading isInline>Carregando lista de personagens...</Loading>
+    }
+
+    if (_.isEmpty(characterList) && !loadingCharacterList) {
+      return (
+        <S.EmptyCharacterList>
+          Nenhum personagem encontrado
+        </S.EmptyCharacterList>
+      )
+    }
+
+    return characterList.map((character) => (
+      <S.CharacterCard
+        key={character.id}
+        onClick={() =>
+          navigate('/character', {
+            state: {
+              player: {
+                id,
+                avatar,
+                character
+              }
+            }
+          })
+        }>
+        <S.CharacterName>{character.name}</S.CharacterName>
+        <S.CharacterPreview>{`${parseClass(
+          character.class
+        )} de nível ${getLevelByExperienceCrystals(
+          character.experience_crystals
+        )}`}</S.CharacterPreview>
+      </S.CharacterCard>
+    ))
+  }
 
   return (
     <S.Container>
-      {characterList.map((character) => (
-        <S.CharacterCard key={character.id}>
-          <h1
-            onClick={() =>
-              navigate('/character', {
-                state: {
-                  player: {
-                    id,
-                    avatar,
-                    character
-                  }
-                }
-              })
-            }>{`${character.name} ${character.class}`}</h1>
-        </S.CharacterCard>
-      ))}
-      <h1
+      {renderCharacterList()}
+      <Anchor
+        icon={iconAdd}
         onClick={() =>
           navigate('/character/new', { state: { player_id: id } })
         }>
-        Criar novo personagem
-      </h1>
+        Criar personagem
+      </Anchor>
     </S.Container>
   )
 }

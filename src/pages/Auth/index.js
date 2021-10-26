@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import { useNavigate } from '@reach/router'
 import { api } from '../../utils'
 
+import { Loading } from '../../components'
+
 const Auth = () => {
   const navigate = useNavigate()
 
@@ -37,7 +39,7 @@ const Auth = () => {
       .catch((err) => console.error('Auth error: ', err))
   }, [navigate])
 
-  return <h1>Verificando...</h1>
+  return <Loading>Verificando...</Loading>
 }
 
 export default Auth

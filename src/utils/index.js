@@ -5,6 +5,9 @@ import getOccupation from './getOccupation'
 import getHitPointsByClass from './getHitPointsByClass'
 import getLevelByExperienceCrystals from './getLevelByExperienceCrystals'
 import diceRoll from './diceRoll'
+import parseClass from './parseClass'
+import getCharacterDescription from './getCharacterDescription'
+import getAttributeModifier from './getAttributeModifier'
 
 export {
   api,
@@ -13,5 +16,8 @@ export {
   getOccupation,
   getHitPointsByClass,
   getLevelByExperienceCrystals,
-  diceRoll
+  diceRoll,
+  parseClass,
+  getCharacterDescription,
+  getAttributeModifier
 }
