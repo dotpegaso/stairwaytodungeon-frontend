@@ -14,6 +14,7 @@ const Character = ({ location }) => {
 
   socket.on('diceroll', function (msg) {
     setDiceResult(msg)
+    setDiceRequested(true)
 
     setTimeout(() => {
       setDiceResult(null)
@@ -26,7 +27,7 @@ const Character = ({ location }) => {
     const result = await diceRoll(dice)
 
     setDiceResult(result)
-    socket.emit('diceroll', dice)
+    socket.emit('diceroll', result)
 
     setTimeout(() => {
       setDiceResult(null)
