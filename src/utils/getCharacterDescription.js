@@ -57,98 +57,170 @@ export default function getCharacterDescription(character) {
   function parseAttribute({ attribute, value }) {
     if (attribute === 'strength') {
       if (value === -3) {
-        return 'Praticamente não tem força física'
+        return {
+          value,
+          description: 'Praticamente não tem força física'
+        }
       }
 
       if (value < 0) {
-        return 'Possui baixa força física'
+        return {
+          value,
+          description: 'Possui baixa força física'
+        }
       }
 
       if (value === 3) {
-        return 'Possui uma força física absurda'
+        return {
+          value,
+          description: 'Possui uma força física absurda'
+        }
       }
 
-      return 'Possui uma boa força física'
+      return {
+        value,
+        description: 'Possui uma boa força física'
+      }
     }
 
     if (attribute === 'intelligence') {
       if (value === -3) {
-        return 'Mal sabe falar'
+        return {
+          value,
+          description: 'Mal sabe falar'
+        }
       }
 
       if (value < 0) {
-        return 'Não sabe ler, nem escrever'
+        return {
+          value,
+          description: 'Não sabe ler, nem escrever'
+        }
       }
 
       if (value === 3) {
-        return 'Consegue falar 4 línguas'
+        return {
+          value,
+          description: 'Consegue falar 4 línguas'
+        }
       }
 
-      return `Consegue falar ${value + 1} línguas`
+      return {
+        value,
+        description: `Consegue falar ${value + 1} línguas`
+      }
     }
 
     if (attribute === 'wisdom') {
       if (value === -3) {
-        return 'Completamente ignorante sobre o mundo'
+        return {
+          value,
+          description: 'Completamente ignorante sobre o mundo'
+        }
       }
 
       if (value < 0) {
-        return 'Tem um baixo conhecimento geral'
+        return {
+          value,
+          description: 'Tem um baixo conhecimento geral'
+        }
       }
 
       if (value === 3) {
-        return 'Conhece muito bem o mundo'
+        return {
+          value,
+          description: 'Conhece muito bem o mundo'
+        }
       }
 
-      return 'Conhece bem o mundo'
+      return {
+        value,
+        description: 'Conhece bem o mundo'
+      }
     }
 
     if (attribute === 'dexterity') {
       if (value === -3) {
-        return 'Mal consegue mirar e se desviar'
+        return {
+          value,
+          description: 'Mal consegue mirar e se desviar'
+        }
       }
 
       if (value < 0) {
-        return 'Tem dificuldade pra mirar e desviar'
+        return {
+          value,
+          description: 'Tem dificuldade pra mirar e desviar'
+        }
       }
 
       if (value === 3) {
-        return 'Mira e se esquiva de olhos fechados'
+        return {
+          value,
+          description: 'Mira e se esquiva de olhos fechados'
+        }
       }
 
-      return 'Tem uma boa mira e um bom reflexo'
+      return {
+        value,
+        description: 'Tem uma boa mira e um bom reflexo'
+      }
     }
 
     if (attribute === 'constituition') {
       if (value === -3) {
-        return 'Está constantemente doente'
+        return {
+          value,
+          description: 'Está constantemente doente'
+        }
       }
 
       if (value < 0) {
-        return 'Tem uma saúde meio ruim'
+        return {
+          value,
+          description: 'Tem uma saúde meio ruim'
+        }
       }
 
       if (value === 3) {
-        return 'Tem uma saúde incrível!'
+        return {
+          value,
+          description: 'Tem uma saúde incrível!'
+        }
       }
 
-      return 'Tem uma saúde boa'
+      return {
+        value,
+        description: 'Tem uma saúde boa'
+      }
     }
 
     if (attribute === 'charisma') {
       if (value === -3) {
-        return 'Péssima lábia'
+        return {
+          value,
+          description: 'Tem uma péssima lábia'
+        }
       }
 
       if (value < 0) {
-        return 'Meio ruim na lábia'
+        return {
+          value,
+          description: 'É um pouco ruim de lábia'
+        }
       }
 
       if (value === 3) {
-        return 'Engana qualquer um'
+        return {
+          value,
+          description: 'Engana quase qualquer um'
+        }
       }
 
-      return 'É bom de lábia'
+      return {
+        value,
+        description: 'É bom de lábia'
+      }
     }
   }
 

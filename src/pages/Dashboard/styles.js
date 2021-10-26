@@ -24,6 +24,7 @@ export const CharacterName = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: capitalize;
 `
 
 export const CharacterPreview = styled.p`

@@ -21,6 +21,9 @@ const Login = () => {
         </Anchor>
       )}
       <Anchor href={driveUrl}>Baixar material gratuito</Anchor>
+      <Anchor href={discordUrl} isDiscord>
+        Acessar West Marches
+      </Anchor>
     </S.Container>
   )
 }

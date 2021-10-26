@@ -2,4 +2,6 @@
   --primary-background: hsl(0, 0%, 22%);
   --primary-color: hsl(0, 0%, 80%);
   --discord: hsl(235, 83%, 59%);
+  --error-color: hsl(0, 70%, 65%);
+  --success-color: hsl(119, 82%, 41%);
 }

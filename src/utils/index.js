@@ -8,6 +8,7 @@ import diceRoll from './diceRoll'
 import parseClass from './parseClass'
 import getCharacterDescription from './getCharacterDescription'
 import getAttributeModifier from './getAttributeModifier'
+import getCharacterMotivation from './getCharacterMotivation'
 
 export {
   api,
@@ -19,5 +20,6 @@ export {
   diceRoll,
   parseClass,
   getCharacterDescription,
-  getAttributeModifier
+  getAttributeModifier,
+  getCharacterMotivation
 }
