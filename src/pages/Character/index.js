@@ -5,20 +5,30 @@ import React, { useState } from 'react'
 import { getLevelByExperienceCrystals, diceRoll } from '../../utils'
 import * as S from './styles'
 
-const socket = io('https://stairwaytodungeon-socket.herokuapp.com')
+const socket = io(process.env.REACT_APP_SOCKET_ENDPOINT)
+
+function getAvatar({ id, avatar }) {
+  return `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`
+}
 
 const Character = ({ location }) => {
   const [diceResult, setDiceResult] = useState()
   const [diceRequested, setDiceRequested] = useState(false)
-  const { character } = location.state
+  const [allyAvatar, setAllyAvatar] = useState()
+  const [allyName, setAllyName] = useState()
+  const { character, avatar, id } = location.state.player
 
-  socket.on('diceroll', function (msg) {
-    setDiceResult(msg)
+  socket.on('diceroll', function (ally) {
+    setDiceResult(ally.result)
+    setAllyAvatar(ally.avatar)
+    setAllyName(ally.name)
     setDiceRequested(true)
 
     setTimeout(() => {
       setDiceResult(null)
       setDiceRequested(false)
+      setAllyAvatar(null)
+      setAllyName(null)
     }, 3500)
   })
 
@@ -27,7 +37,11 @@ const Character = ({ location }) => {
     const result = await diceRoll(dice)
 
     setDiceResult(result)
-    socket.emit('diceroll', result)
+    socket.emit('diceroll', {
+      result,
+      avatar: getAvatar({ id, avatar }),
+      name: character.name
+    })
 
     setTimeout(() => {
       setDiceResult(null)
@@ -75,7 +89,13 @@ const Character = ({ location }) => {
         roll d100
       </button>
 
-      {!_.isNil(diceResult) && <h1>{diceResult}</h1>}
+      {!_.isNil(diceResult) && (
+        <>
+          <h1>{diceResult}</h1>
+          <h2>{allyName || character.name}</h2>
+          <img src={allyAvatar || getAvatar({ id, avatar })} alt="avatar" />
+        </>
+      )}
     </S.Container>
   )
 }

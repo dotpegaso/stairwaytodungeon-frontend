@@ -8,7 +8,7 @@ import * as S from './styles'
 const Dashboard = ({ location }) => {
   const [characterList, setCharacterList] = useState([])
   const navigate = useNavigate()
-  const { id } = location.state.response
+  const { id, avatar } = location.state.response
 
   useEffect(() => {
     api({ method: 'GET', url: `characters?player_id=${id}` }).then(
@@ -24,7 +24,15 @@ const Dashboard = ({ location }) => {
         <S.CharacterCard key={character.id}>
           <h1
             onClick={() =>
-              navigate('/character', { state: { character } })
+              navigate('/character', {
+                state: {
+                  player: {
+                    id,
+                    avatar,
+                    character
+                  }
+                }
+              })
             }>{`${character.name} ${character.class}`}</h1>
         </S.CharacterCard>
       ))}
