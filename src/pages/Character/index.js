@@ -1,19 +1,32 @@
 /* eslint-disable react/prop-types */
+import { io } from 'socket.io-client'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { getLevelByExperienceCrystals, diceRoll } from '../../utils'
 import * as S from './styles'
+
+const socket = io('https://stairwaytodungeon-socket.herokuapp.com')
 
 const Character = ({ location }) => {
   const [diceResult, setDiceResult] = useState()
   const [diceRequested, setDiceRequested] = useState(false)
   const { character } = location.state
 
+  socket.on('diceroll', function (msg) {
+    setDiceResult(msg)
+
+    setTimeout(() => {
+      setDiceResult(null)
+      setDiceRequested(false)
+    }, 3500)
+  })
+
   async function handleDiceRoll(dice) {
     setDiceRequested(true)
     const result = await diceRoll(dice)
 
     setDiceResult(result)
+    socket.emit('diceroll', dice)
 
     setTimeout(() => {
       setDiceResult(null)
