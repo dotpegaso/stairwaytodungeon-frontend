@@ -151,6 +151,7 @@ const CreateCharacter = ({ location }) => {
           ))}
         </div>
         <S.Text>{`💰 Carrega ${character.gold_pieces} moedas de ouro`}</S.Text>
+        <S.Text>{`👤 Já trabalhou como ${character.occupation}`}</S.Text>
       </S.CharacterCard>
     ))
   }
@@ -193,7 +194,7 @@ const CreateCharacter = ({ location }) => {
       ...selectedCharacter,
       name: characterName,
       class: characterClass,
-      motivation: characterMotivation,
+      motivation: characterMotivation[selectedCharacter.id],
       total_hp: hp,
       current_hp: hp,
       player_id

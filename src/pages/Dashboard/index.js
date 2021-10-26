@@ -43,28 +43,30 @@ const Dashboard = ({ location }) => {
       )
     }
 
-    return characterList.map((character) => (
-      <S.CharacterCard
-        key={character.id}
-        onClick={() =>
-          navigate('/character', {
-            state: {
-              player: {
-                id,
-                avatar,
-                character
+    return characterList
+      .filter((pc) => pc.status === 'alive')
+      .map((character) => (
+        <S.CharacterCard
+          key={character.id}
+          onClick={() =>
+            navigate('/character', {
+              state: {
+                player: {
+                  id,
+                  avatar,
+                  character
+                }
               }
-            }
-          })
-        }>
-        <S.CharacterName>{character.name}</S.CharacterName>
-        <S.CharacterPreview>{`${parseClass(
-          character.class
-        )} de nível ${getLevelByExperienceCrystals(
-          character.experience_crystals
-        )}`}</S.CharacterPreview>
-      </S.CharacterCard>
-    ))
+            })
+          }>
+          <S.CharacterName>{character.name}</S.CharacterName>
+          <S.CharacterPreview>{`${parseClass(
+            character.class
+          )} de nível ${getLevelByExperienceCrystals(
+            character.experience_crystals
+          )}`}</S.CharacterPreview>
+        </S.CharacterCard>
+      ))
   }
 
   return (
