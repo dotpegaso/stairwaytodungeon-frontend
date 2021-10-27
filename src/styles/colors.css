@@ -1,5 +1,6 @@
 :root {
-  --primary-background: hsl(0, 0%, 22%);
+  --primary-background: hsl(218, 7%, 23%);
+  --secondary-background: hsl(218, 90%, 45%);
   --primary-color: hsl(0, 0%, 80%);
   --discord: hsl(235, 83%, 59%);
   --error-color: hsl(0, 70%, 65%);

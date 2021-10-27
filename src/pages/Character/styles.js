@@ -23,11 +23,10 @@ export const AllyDiceTrayOverlay = styled.div`
 
 export const AllyDiceTray = styled.div`
   height: fit-content;
-  width: fit-content;
+  width: 90%;
   border-radius: 6px;
   background: var(--primary-color);
   position: relative;
-  padding: 20px;
 `
 
 export const CharacterCard = styled.div`
@@ -39,7 +38,7 @@ export const CharacterCard = styled.div`
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 `
 
 export const ListItem = styled.li`
@@ -67,28 +66,34 @@ export const Text = styled.p`
     font-size: 18px;
   `}
 
-${(props) =>
+  ${(props) =>
     props.diceResult &&
     `
     color: var(--primary-background);
     font-size: 50vw;
     text-align: center;
   `}
+
+  ${(props) =>
+    props.isName &&
+    `
+    font-weight: bold;
+  `}
 `
 
 export const DiceTray = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 15px;
   width: 100%;
 `
 
 export const Dice = styled.button`
-  height: 75px;
+  height: 70px;
   width: 100%;
   background: transparent;
-  border: 2px solid var(--primary-color);
+  border: none;
   color: var(--primary-color);
   text-align: center;
   border-radius: 6px;
@@ -111,6 +116,25 @@ export const Icon = styled.img`
   height: 100%;
   object-fit: contain;
   margin-top: 10px;
+
+  ${(props) =>
+    props.isAllyDice &&
+    `
+    margin: 0 auto;
+    margin-bottom: 20px;
+    width: fit-content;
+    padding: 5px 20px;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    padding-top: 15px;
+    object-fit: contain;
+    position: absolute;
+    bottom: -65px;
+    right: 0;
+    left: 0;
+    background: var(--secondary-background);
+  `}
 `
 
 export const PlayerTag = styled.div`
@@ -118,6 +142,10 @@ export const PlayerTag = styled.div`
   gap: 10px;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  padding: 10px 0;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 `
 
 export const Avatar = styled.img`

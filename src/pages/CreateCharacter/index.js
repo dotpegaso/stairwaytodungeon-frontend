@@ -174,7 +174,6 @@ const CreateCharacter = ({ location }) => {
   function handleSubmit(e) {
     e.preventDefault()
     e.stopPropagation()
-    setIsSubmitting(true)
 
     if (_.isNil(characterName)) {
       return alert('Adicione um nome')
@@ -187,6 +186,8 @@ const CreateCharacter = ({ location }) => {
     if (_.isNil(selectedCharacter)) {
       return alert('Selecione um arquétipo')
     }
+
+    setIsSubmitting(true)
 
     const hp = getHitPointsByClass(characterClass)
 
@@ -211,7 +212,7 @@ const CreateCharacter = ({ location }) => {
   }
 
   return (
-    <S.Container>
+    <S.Container onSubmit={(e) => handleSubmit(e)}>
       <S.Text>Escolha um nome:</S.Text>
       <S.Input
         placeholder="Ex: Cleverson Canelafina"
@@ -223,10 +224,7 @@ const CreateCharacter = ({ location }) => {
       {renderClassOptions()}
       <S.Text>Selecione um arquétipo, entre os três:</S.Text>
       {renderCharacterOptions()}
-      <S.Button
-        type="submit"
-        onClick={(e) => handleSubmit(e)}
-        disabled={isSubmitting}>
+      <S.Button type="submit" disabled={isSubmitting}>
         Criar personagem
       </S.Button>
     </S.Container>

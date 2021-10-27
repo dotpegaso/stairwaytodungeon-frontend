@@ -7,7 +7,9 @@ import { io } from 'socket.io-client'
 import {
   getLevelByExperienceCrystals,
   getCharacterDescription,
-  diceRoll
+  diceRoll,
+  api,
+  parseClass
 } from '../../utils'
 
 import d4 from '../../assets/images/d4.svg'
@@ -21,6 +23,15 @@ import * as S from './styles'
 
 const socket = io(process.env.REACT_APP_SOCKET_ENDPOINT)
 
+const diceIconByValue = {
+  4: d4,
+  6: d6,
+  8: d8,
+  10: d10,
+  12: d12,
+  20: d20
+}
+
 function getAvatar({ id, avatar }) {
   return `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`
 }
@@ -30,6 +41,8 @@ const Character = ({ location }) => {
   const [diceRequested, setDiceRequested] = useState(false)
   const [allyAvatar, setAllyAvatar] = useState()
   const [allyName, setAllyName] = useState()
+  const [allyDice, setAllyDice] = useState()
+  const [playerCharacter, setUpdatedPlayerCharacter] = useState({})
   const navigate = useNavigate()
   const { character, avatar, id } = _.defaultTo(
     _.get(location, 'state.player'),
@@ -37,24 +50,48 @@ const Character = ({ location }) => {
   )
 
   useEffect(() => {
+    api({ method: 'GET', url: `characters/${character.id}` }).then(
+      (response) => {
+        setUpdatedPlayerCharacter(response)
+      }
+    )
+  }, [character.id])
+
+  useEffect(() => {
     if (_.isNil(id)) {
       navigate('/')
     }
   }, [id, navigate])
 
-  socket.on('diceroll', function (ally) {
-    setDiceResult(ally.result)
-    setAllyAvatar(ally.avatar)
-    setAllyName(ally.name)
-    setDiceRequested(true)
+  useEffect(() => {
+    socket.on('characters', () => {
+      console.log('chars')
+      if (!_.isNil(playerCharacter)) {
+        api({ method: 'GET', url: `characters/${character.id}` }).then(
+          (response) => {
+            setUpdatedPlayerCharacter(response)
+          }
+        )
+      }
+    })
 
-    setTimeout(() => {
-      setDiceResult(null)
-      setDiceRequested(false)
-      setAllyAvatar(null)
-      setAllyName(null)
-    }, 3500)
-  })
+    socket.on('diceroll', function (ally) {
+      console.log('diceroll')
+      setDiceResult(ally.result)
+      setAllyAvatar(ally.avatar)
+      setAllyName(ally.name)
+      setAllyDice(ally.dice)
+      setDiceRequested(true)
+
+      setTimeout(() => {
+        setDiceResult(null)
+        setDiceRequested(false)
+        setAllyAvatar(null)
+        setAllyName(null)
+        setAllyDice(null)
+      }, 4000)
+    })
+  }, [])
 
   async function handleDiceRoll(dice) {
     setDiceRequested(true)
@@ -63,8 +100,9 @@ const Character = ({ location }) => {
     setDiceResult(result)
     socket.emit('diceroll', {
       result,
+      dice,
       avatar: getAvatar({ id, avatar }),
-      name: character.name
+      name: _.get(playerCharacter, 'name')
     })
 
     setTimeout(() => {
@@ -74,50 +112,52 @@ const Character = ({ location }) => {
   }
 
   function renderDescription() {
-    return getCharacterDescription(character).map((attribute, index) => (
-      <S.ListItem
-        key={index}
-        isPositive={attribute.value === 3}
-        isNegative={attribute.value === -3}>
-        {attribute.description}
-      </S.ListItem>
-    ))
+    return getCharacterDescription(playerCharacter || []).map(
+      (attribute, index) => (
+        <S.ListItem
+          key={index}
+          isPositive={attribute.value === 3}
+          isNegative={attribute.value === -3}>
+          {attribute.description}
+        </S.ListItem>
+      )
+    )
   }
 
   return (
     <S.Container>
-      <S.Text>{`${character.name}, ${
-        character.class
-      } de nível ${getLevelByExperienceCrystals(
-        character.experience_crystals
+      <S.Text isName>{`${_.get(playerCharacter, 'name')}, ${parseClass(
+        _.get(playerCharacter, 'class')
+      )} de Nível ${getLevelByExperienceCrystals(
+        _.get(playerCharacter, 'experience_crystals')
       )}`}</S.Text>
 
       <S.CharacterCard>
+        <S.Text>{`Busca ${_.get(playerCharacter, 'motivation')}`}</S.Text>
         <div>{renderDescription()}</div>
-        <S.Text>{`💰 Carrega ${character.gold_pieces} moedas de ouro`}</S.Text>
-        <S.Text>{`👤 Já trabalhou como ${character.occupation}`}</S.Text>
-        <S.Text>{`💠 Total de Cristais de XP: ${character.experience_crystals} `}</S.Text>
+        <S.Text>{`💰 ${_.get(playerCharacter, 'gold_pieces')}`}</S.Text>
+        <S.Text>{`💠 Cristais de XP: ${_.get(
+          playerCharacter,
+          'experience_crystals'
+        )} `}</S.Text>
+        <S.Text>{`👤 Já foi: ${_.get(playerCharacter, 'occupation')}`}</S.Text>
+        {_.get(playerCharacter, 'first_weapon') && (
+          <S.Text>{`✋ Equipamento: ${_.get(
+            playerCharacter,
+            'first_weapon'
+          )}`}</S.Text>
+        )}
       </S.CharacterCard>
 
       <S.DiceTray>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(4)}>
-          <S.Icon src={d4} />
-        </S.Dice>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(6)}>
-          <S.Icon src={d6} />
-        </S.Dice>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(8)}>
-          <S.Icon src={d8} />
-        </S.Dice>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(10)}>
-          <S.Icon src={d10} />
-        </S.Dice>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(12)}>
-          <S.Icon src={d12} />
-        </S.Dice>
-        <S.Dice disabled={diceRequested} onClick={() => handleDiceRoll(20)}>
-          <S.Icon src={d20} />
-        </S.Dice>
+        {[4, 6, 8, 10, 12, 20].map((dice, index) => (
+          <S.Dice
+            key={index}
+            disabled={diceRequested}
+            onClick={() => handleDiceRoll(dice)}>
+            <S.Icon src={diceIconByValue[dice]} />
+          </S.Dice>
+        ))}
       </S.DiceTray>
 
       {!_.isNil(diceResult) && (
@@ -129,10 +169,11 @@ const Character = ({ location }) => {
                 alt="avatar"
               />
               <S.Text playerName>{`${
-                allyName || character.name
+                allyName || _.get(playerCharacter, 'name')
               } rolou:`}</S.Text>
             </S.PlayerTag>
             <S.Text diceResult>{diceResult}</S.Text>
+            <S.Icon src={diceIconByValue[allyDice]} isAllyDice />
           </S.AllyDiceTray>
         </S.AllyDiceTrayOverlay>
       )}

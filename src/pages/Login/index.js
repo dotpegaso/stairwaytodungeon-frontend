@@ -17,7 +17,7 @@ const Login = () => {
       <S.Image src={logo} alt="logo" />
       {isMobile && (
         <Anchor href={discordUrl} isDiscord>
-          Acessar West Marches
+          Entrar com Discord
         </Anchor>
       )}
       <Anchor href={driveUrl}>Baixar material gratuito</Anchor>
