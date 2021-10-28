@@ -6,12 +6,14 @@ export const Container = styled.form`
   align-items: center;
   gap: 20px;
   padding: 20px;
+  height: 100%;
 `
 
 export const AllyDiceTrayOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
   z-index: 99;
   background: rgba(0, 0, 0, 0.8);
   display: flex;
@@ -29,6 +31,12 @@ export const AllyDiceTray = styled.div`
   position: relative;
 `
 
+export const Gap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
 export const CharacterCard = styled.div`
   padding: 10px;
   color: var(--primary-color);
@@ -38,7 +46,7 @@ export const CharacterCard = styled.div`
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 25px;
 `
 
 export const ListItem = styled.li`
@@ -63,7 +71,8 @@ export const Text = styled.p`
     props.playerName &&
     `
     color: var(--primary-background);
-    font-size: 18px;
+    font-size: 16px;
+    text-transform: capitalize;
   `}
 
   ${(props) =>
@@ -78,6 +87,21 @@ export const Text = styled.p`
     props.isName &&
     `
     font-weight: bold;
+    text-align: center;
+    text-transform: capitalize;
+  `}
+
+  ${(props) =>
+    props.isAllyDice &&
+    `
+    color: var(--primary-background);
+    text-align: center;
+  `}
+
+  ${(props) =>
+    props.isUnavailable &&
+    `
+    opacity: .3;
   `}
 `
 
@@ -151,4 +175,9 @@ export const PlayerTag = styled.div`
 export const Avatar = styled.img`
   border-radius: 50%;
   height: 50px;
+`
+
+export const Details = styled.details`
+  margin-left: 20px;
+  opacity: 0.7;
 `

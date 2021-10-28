@@ -13,6 +13,7 @@ import iconAdd from '../../assets/images/icon_add.svg'
 const Dashboard = ({ location }) => {
   const [characterList, setCharacterList] = useState([])
   const [loadingCharacterList, setLoadingCharacterList] = useState(true)
+
   const navigate = useNavigate()
 
   const { id, avatar } = _.defaultTo(_.get(location, 'state.response'), {})
@@ -30,16 +31,24 @@ const Dashboard = ({ location }) => {
     )
   }, [id, navigate])
 
-  function renderCharacterList() {
+  function renderCharactesList() {
     if (_.isEmpty(characterList) && loadingCharacterList) {
       return <Loading isInline>Carregando lista de personagens...</Loading>
     }
 
-    if (_.isEmpty(characterList) && !loadingCharacterList) {
+    if (
+      (_.isEmpty(characterList) && !loadingCharacterList) ||
+      (!_.size(characterList.filter((pc) => pc.status === 'alive')) &&
+        !loadingCharacterList)
+    ) {
       return (
-        <S.EmptyCharacterList>
-          Nenhum personagem encontrado
-        </S.EmptyCharacterList>
+        <Anchor
+          icon={iconAdd}
+          onClick={() =>
+            navigate('/character/new', { state: { player_id: id } })
+          }>
+          Criar personagem
+        </Anchor>
       )
     }
 
@@ -69,18 +78,7 @@ const Dashboard = ({ location }) => {
       ))
   }
 
-  return (
-    <S.Container>
-      {renderCharacterList()}
-      <Anchor
-        icon={iconAdd}
-        onClick={() =>
-          navigate('/character/new', { state: { player_id: id } })
-        }>
-        Criar personagem
-      </Anchor>
-    </S.Container>
-  )
+  return <S.Container>{renderCharactesList()}</S.Container>
 }
 
 Dashboard.propTypes = {

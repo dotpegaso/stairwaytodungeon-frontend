@@ -9,6 +9,8 @@ import parseClass from './parseClass'
 import getCharacterDescription from './getCharacterDescription'
 import getAttributeModifier from './getAttributeModifier'
 import getCharacterMotivation from './getCharacterMotivation'
+import getThaco from './getThaco'
+import getArmorClass from './getArmorClass'
 
 export {
   api,
@@ -21,5 +23,7 @@ export {
   parseClass,
   getCharacterDescription,
   getAttributeModifier,
-  getCharacterMotivation
+  getCharacterMotivation,
+  getThaco,
+  getArmorClass
 }

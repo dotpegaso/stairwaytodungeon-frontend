@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import { useNavigate } from '@reach/router'
 import { io } from 'socket.io-client'
 
+import { Loading } from '../../components'
+
 import {
   getLevelByExperienceCrystals,
   getCharacterDescription,
+  getArmorClass,
+  parseClass,
+  getThaco,
   diceRoll,
-  api,
-  parseClass
+  api
 } from '../../utils'
 
 import d4 from '../../assets/images/d4.svg'
@@ -65,7 +70,6 @@ const Character = ({ location }) => {
 
   useEffect(() => {
     socket.on('characters', () => {
-      console.log('chars')
       if (!_.isNil(playerCharacter)) {
         api({ method: 'GET', url: `characters/${character.id}` }).then(
           (response) => {
@@ -76,7 +80,6 @@ const Character = ({ location }) => {
     })
 
     socket.on('diceroll', function (ally) {
-      console.log('diceroll')
       setDiceResult(ally.result)
       setAllyAvatar(ally.avatar)
       setAllyName(ally.name)
@@ -96,8 +99,8 @@ const Character = ({ location }) => {
   async function handleDiceRoll(dice) {
     setDiceRequested(true)
     const result = await diceRoll(dice)
-
     setDiceResult(result)
+
     socket.emit('diceroll', {
       result,
       dice,
@@ -124,6 +127,10 @@ const Character = ({ location }) => {
     )
   }
 
+  if (_.isEmpty(playerCharacter)) {
+    return <Loading>Carregando personagem</Loading>
+  }
+
   return (
     <S.Container>
       <S.Text isName>{`${_.get(playerCharacter, 'name')}, ${parseClass(
@@ -133,20 +140,100 @@ const Character = ({ location }) => {
       )}`}</S.Text>
 
       <S.CharacterCard>
-        <S.Text>{`Busca ${_.get(playerCharacter, 'motivation')}`}</S.Text>
+        <S.Gap>
+          <S.Text>Motivação:</S.Text>
+          <S.Text>{`Busca ${_.get(playerCharacter, 'motivation')}`}</S.Text>
+        </S.Gap>
         <div>{renderDescription()}</div>
-        <S.Text>{`💰 ${_.get(playerCharacter, 'gold_pieces')}`}</S.Text>
-        <S.Text>{`💠 Cristais de XP: ${_.get(
-          playerCharacter,
-          'experience_crystals'
-        )} `}</S.Text>
-        <S.Text>{`👤 Já foi: ${_.get(playerCharacter, 'occupation')}`}</S.Text>
-        {_.get(playerCharacter, 'first_weapon') && (
-          <S.Text>{`✋ Equipamento: ${_.get(
-            playerCharacter,
-            'first_weapon'
-          )}`}</S.Text>
+
+        {_.size(_.get(playerCharacter, 'weapons')) > 0 && (
+          <S.Gap>
+            <S.Text>Equipamentos:</S.Text>
+            {_.get(playerCharacter, 'weapons').map((weapon, index) => (
+              <S.Text key={index}>
+                {`-
+                  ${weapon.name}
+                  ${!_.isNil(weapon.damage) ? `(${weapon.damage})` : ''}
+                  ${
+                    !_.isNil(weapon.attack_bonus)
+                      ? `(${weapon.attack_bonus_description})`
+                      : ''
+                  }
+                  ${
+                    !_.isNil(weapon.defense_bonus)
+                      ? `(${weapon.defense_bonus_description})`
+                      : ''
+                  }
+
+                `}
+              </S.Text>
+            ))}
+          </S.Gap>
         )}
+
+        {_.size(_.get(playerCharacter, 'grimoire')) > 0 && (
+          <S.Gap>
+            <S.Text>Magias:</S.Text>
+            {_.get(playerCharacter, 'grimoire').map((spell, index) => {
+              return _.get(spell, 'isAvailable') ? (
+                <>
+                  <S.Text>{`✨ ${spell.name}`}</S.Text>
+                  <S.Details key={index}>
+                    <summary>Detalhes da magia</summary>
+                    <S.Text>{`${spell.description}`}</S.Text>
+                  </S.Details>
+                </>
+              ) : (
+                <S.Text isUnavailable>{`✨ ${spell.name} - esquecida`}</S.Text>
+              )
+            })}
+          </S.Gap>
+        )}
+
+        {_.size(_.get(playerCharacter, 'items')) > 0 && (
+          <S.Gap>
+            <S.Text>Items:</S.Text>
+            {_.get(playerCharacter, 'items').map((item) => {
+              return _.get(item, 'quantity') > 0 ? (
+                <>
+                  <S.Text>{`${item.quantity} ${item.name}`}</S.Text>
+                </>
+              ) : (
+                <S.Text isUnavailable>{`${item.quantity} ${item.name}`}</S.Text>
+              )
+            })}
+          </S.Gap>
+        )}
+
+        <S.Gap>
+          <S.Text>Extra:</S.Text>
+          <S.Text>{`💰 ${_.get(playerCharacter, 'gold_pieces')}`}</S.Text>
+          <S.Text>{`🏏 THAC0: ${getThaco({
+            characterClass: _.get(playerCharacter, 'class'),
+            level: getLevelByExperienceCrystals(
+              _.get(playerCharacter, 'experience_crystals')
+            )
+          })}`}</S.Text>
+          <S.Text>{`🛡 Armadura: ${getArmorClass({
+            baseArmorClass: _.get(playerCharacter, 'armor_class'),
+            weapons: _.get(playerCharacter, 'weapons'),
+            playerCharacter
+          })}`}</S.Text>
+          <S.Text>{`💠 Cristais de XP: ${_.get(
+            playerCharacter,
+            'experience_crystals'
+          )} `}</S.Text>
+          <S.Text>{`👤 Já foi: ${_.get(
+            playerCharacter,
+            'occupation'
+          )}`}</S.Text>
+          {_.get(playerCharacter, 'first_weapon') && (
+            <S.Text>{`✋ Equipamento: ${_.get(
+              playerCharacter,
+              'first_weapon'
+            )}`}</S.Text>
+          )}
+        </S.Gap>
       </S.CharacterCard>
 
       <S.DiceTray>
@@ -164,16 +251,13 @@ const Character = ({ location }) => {
         <S.AllyDiceTrayOverlay>
           <S.AllyDiceTray>
             <S.PlayerTag>
-              <S.Avatar
-                src={allyAvatar || getAvatar({ id, avatar })}
-                alt="avatar"
-              />
+              {allyAvatar && <S.Avatar src={allyAvatar} alt="avatar" />}
               <S.Text playerName>{`${
                 allyName || _.get(playerCharacter, 'name')
-              } rolou:`}</S.Text>
+              }`}</S.Text>
             </S.PlayerTag>
             <S.Text diceResult>{diceResult}</S.Text>
-            <S.Icon src={diceIconByValue[allyDice]} isAllyDice />
+            {allyDice && <S.Icon src={diceIconByValue[allyDice]} isAllyDice />}
           </S.AllyDiceTray>
         </S.AllyDiceTrayOverlay>
       )}

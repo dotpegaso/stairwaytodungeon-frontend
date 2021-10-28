@@ -30,9 +30,3 @@ export const CharacterName = styled.p`
 export const CharacterPreview = styled.p`
   font-size: 1rem;
 `
-
-export const EmptyCharacterList = styled.div`
-  color: var(--primary-color);
-  font-size: 18px;
-  opacity: 0.6;
-`
