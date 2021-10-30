@@ -5,6 +5,7 @@ import { Anchor } from '../../components'
 import * as S from './styles'
 
 import logo from '../../assets/images/logo.svg'
+import download from '../../assets/images/icon_download.svg'
 
 const driveUrl =
   'https://drive.google.com/drive/u/0/folders/1tg3sTMbm065Dkgw9dku084oelrwkZipQ'
@@ -14,13 +15,15 @@ const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${process
 const Login = () => {
   return (
     <S.Container>
-      <S.Image src={logo} alt="logo" />
+      <img src={logo} alt="logo" />
       {isMobile && (
         <Anchor href={discordUrl} isDiscord>
           Entrar com Discord
         </Anchor>
       )}
-      <Anchor href={driveUrl}>Baixar material gratuito</Anchor>
+      <Anchor href={driveUrl} icon={download}>
+        Baixar material gratuito
+      </Anchor>
     </S.Container>
   )
 }

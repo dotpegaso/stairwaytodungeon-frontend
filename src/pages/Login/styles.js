@@ -39,5 +39,3 @@ export const Anchor = styled.a`
     width: 250px;
   `}
 `
-
-export const Image = styled.img``
