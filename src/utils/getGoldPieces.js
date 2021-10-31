@@ -1,20 +1,6 @@
-const RandomOrg = require('random-org')
+import _ from 'lodash'
 
-const random = new RandomOrg({
-  apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
-})
-
-export default async function getGoldPieces() {
-  const result = await random
-    .generateIntegers({
-      min: 1,
-      max: 6,
-      n: 3
-    })
-    .then((result) => {
-      const { data } = result.random
-      return data
-    })
-
+export default function getGoldPieces() {
+  const result = _(3).times(() => Math.floor(Math.random() * 6 + 1))
   return result.reduce((a, b) => a + b) * 10
 }

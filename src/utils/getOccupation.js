@@ -1,9 +1,3 @@
-const RandomOrg = require('random-org')
-
-const random = new RandomOrg({
-  apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
-})
-
 const occupationList = [
   'Armeiro(a)',
   'Astrólogo(a)',
@@ -51,17 +45,6 @@ const occupationList = [
   'Vigarista'
 ]
 
-export default async function getOccupation() {
-  const result = await random
-    .generateIntegers({
-      min: 0,
-      max: occupationList.length - 1,
-      n: 1
-    })
-    .then((result) => {
-      const { data } = result.random
-      return data
-    })
-
-  return occupationList[result]
+export default function getOccupation() {
+  return occupationList[Math.floor(Math.random() * occupationList.length)]
 }

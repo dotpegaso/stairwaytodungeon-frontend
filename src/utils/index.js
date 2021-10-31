@@ -11,6 +11,7 @@ import getAttributeModifier from './getAttributeModifier'
 import getCharacterMotivation from './getCharacterMotivation'
 import getThaco from './getThaco'
 import getArmorClass from './getArmorClass'
+import getAvatar from './getAvatar'
 
 export {
   api,
@@ -25,5 +26,6 @@ export {
   getAttributeModifier,
   getCharacterMotivation,
   getThaco,
-  getArmorClass
+  getArmorClass,
+  getAvatar
 }

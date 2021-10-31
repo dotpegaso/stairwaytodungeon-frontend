@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react'
 import { useAppContext } from '../../context'
 import Link from 'next/link'
 
-import { Loading } from '../../components'
+import { Loading, Container } from '../../components'
 import { api, getLevelByExperienceCrystals, parseClass } from '../../utils'
-
-import * as S from './styles'
 
 const Dashboard = () => {
   const [characterList, setCharacterList] = useState([])
@@ -49,28 +47,26 @@ const Dashboard = () => {
     return characterList
       .filter((pc) => pc.isAlive)
       .map((character) => (
-        <S.CharacterCard
-          key={character.id}
-          href={`/characters/${character.id}`}>
+        <div key={character.id} href={`/characters/${character.id}`}>
           <a>
-            <S.CharacterName>{character.name}</S.CharacterName>
-            <S.CharacterPreview>{`${parseClass(
+            <p>{character.name}</p>
+            <p>{`${parseClass(
               character.class
             )} de nível ${getLevelByExperienceCrystals(
               character.experience_crystals
-            )}`}</S.CharacterPreview>
+            )}`}</p>
           </a>
-        </S.CharacterCard>
+        </div>
       ))
   }
 
   return (
-    <S.Container>
+    <Container>
       {renderCharactesList()}
       <Link href="/characters/create">
         <a>Criar personagem</a>
       </Link>{' '}
-    </S.Container>
+    </Container>
   )
 }
 

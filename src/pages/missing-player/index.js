@@ -1,9 +1,3 @@
-import * as S from './styles'
-
-const NotFound = () => (
-  <S.Container>
-    <h1>Você não está no servidor</h1>
-  </S.Container>
-)
+const NotFound = () => <h1>Você não está no servidor</h1>
 
 export default NotFound

@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
+import RandomOrg from 'random-org'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+
 import { useAppContext } from '../../../context'
-
-import RandomOrg from 'random-org'
-
-import { Loading } from '../../../components'
+import { Loading, ListItem, Container } from '../../../components'
 
 import {
   pointsToAttributes,
@@ -13,25 +12,22 @@ import {
   getOccupation,
   getHitPointsByClass,
   getCharacterDescription,
-  getCharacterMotivation,
-  api,
-  parseClass
+  parseClass,
+  api
 } from '../../../utils'
-
-import * as S from './styles'
 
 const random = new RandomOrg({
   apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
 })
 
 const classOptions = [
-  { value: 'cleric', description: 'Clérigo(a)', emoji: '🛡' },
-  { value: 'fighter', description: 'Guerreiro(a)', emoji: '⚔️' },
-  { value: 'magic-user', description: 'Mago(a)', emoji: '🧙‍♂️' },
-  { value: 'thief', description: 'Ladino(a)', emoji: '🗡' },
-  { value: 'dwarf', description: 'Anão/Anã', emoji: '🌋' },
-  { value: 'elf', description: 'Elfo(a)', emoji: '🧝‍♂️' },
-  { value: 'halfling', description: 'Halfling', emoji: '🦶' }
+  { value: 'cleric', emoji: '🛡' },
+  { value: 'fighter', emoji: '⚔️' },
+  { value: 'magic-user', emoji: '🧙‍♂️' },
+  { value: 'thief', emoji: '🗡' },
+  { value: 'dwarf', emoji: '🌋' },
+  { value: 'elf', emoji: '🧝‍♂️' },
+  { value: 'halfling', emoji: '🦶' }
 ]
 
 const CreateCharacter = () => {
@@ -40,7 +36,6 @@ const CreateCharacter = () => {
   const [selectedCharacter, setSelectedCharacter] = useState()
   const [characterName, setCharacterName] = useState()
   const [characterClass, setCharacterClass] = useState()
-  const [characterMotivation, setCharacterMotivation] = useState([])
   const [showLoadingScreen, setShowLoadingScreen] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedCharacterCard, setSelectedCharacterCard] = useState()
@@ -66,46 +61,25 @@ const CreateCharacter = () => {
           const { data } = result.random
           setAttributes(data)
         })
-
-      setCharacterMotivation(getCharacterMotivation())
     }
   }, [characterOptions])
 
   useEffect(() => {
     if (_.isNil(attributes) || !_.isEmpty(characterOptions)) {
-      return
+      return null
     }
 
-    async function initCharacter() {
-      const [
-        firstAttributePoints,
-        secondAttributePoints,
-        thirdAttributePoints
-      ] = _.chunk(attributes, 6)
-
-      const firstCharacter = {
-        ...pointsToAttributes(firstAttributePoints),
-        occupation: await getOccupation(),
-        gold_pieces: await getGoldPieces(),
+    function initCharacter() {
+      const [firstCharacter, secondCharacter, thirdCharacter] = _.chunk(
+        attributes,
+        6
+      ).map((character, index) => ({
+        ...pointsToAttributes(character),
+        occupation: getOccupation(),
+        gold_pieces: getGoldPieces(),
         armor_class: 9,
-        id: 1
-      }
-
-      const secondCharacter = {
-        ...pointsToAttributes(secondAttributePoints),
-        occupation: await getOccupation(),
-        gold_pieces: await getGoldPieces(),
-        armor_class: 9,
-        id: 2
-      }
-
-      const thirdCharacter = {
-        ...pointsToAttributes(thirdAttributePoints),
-        occupation: await getOccupation(),
-        gold_pieces: await getGoldPieces(),
-        armor_class: 9,
-        id: 3
-      }
+        id: index + 1
+      }))
 
       setCharacterOptions([firstCharacter, secondCharacter, thirdCharacter])
     }
@@ -124,51 +98,42 @@ const CreateCharacter = () => {
     setSelectedCharacterCard(index)
   }
 
-  if (showLoadingScreen) {
-    return <Loading>Gerando opções de personagens...</Loading>
-  }
-
   function renderCharacterOptions() {
     return characterOptions.map((character, index) => (
-      <S.CharacterCard
+      <div
         onClick={() =>
           handleCharacterSelection({ character, index: character.id })
         }
         isSelected={selectedCharacterCard === character.id}
         key={index}>
-        <S.Text>
-          {`${
-            parseClass(characterClass) + ' que busca ' || 'Alguém que busca '
-          } ${characterMotivation[index]}`}
-        </S.Text>
         <div>
           {getCharacterDescription(character).map((attribute, index) => (
-            <S.ListItem
+            <ListItem
               key={index}
               isPositive={attribute.value === 3}
               isNegative={attribute.value === -3}>
               {attribute.description}
-            </S.ListItem>
+            </ListItem>
           ))}
         </div>
-        <S.Text>{`💰 Carrega ${character.gold_pieces} moedas de ouro`}</S.Text>
-        <S.Text>{`👤 Já trabalhou como ${character.occupation}`}</S.Text>
-      </S.CharacterCard>
+        <p>{`💰 Carrega ${character.gold_pieces} moedas de ouro`}</p>
+        <p>{`👤 Já trabalhou como ${character.occupation}`}</p>
+      </div>
     ))
   }
 
   function renderClassOptions() {
     return (
-      <S.ClassOptionsWrapper>
+      <>
         {classOptions.map((option, index) => (
-          <S.ClassOption
+          <div
             key={index}
             isSelected={option.value === characterClass}
             onClick={() => setCharacterClass(option.value)}>
-            {option.emoji} {option.description}
-          </S.ClassOption>
+            {option.emoji} {parseClass(option.value)}
+          </div>
         ))}
-      </S.ClassOptionsWrapper>
+      </>
     )
   }
 
@@ -196,7 +161,6 @@ const CreateCharacter = () => {
       ...selectedCharacter,
       name: characterName,
       class: characterClass,
-      motivation: characterMotivation[selectedCharacter.id],
       total_hp: hp,
       current_hp: hp,
       discord_id: discordId
@@ -212,23 +176,27 @@ const CreateCharacter = () => {
     return <Loading>Criando personagem...</Loading>
   }
 
+  if (showLoadingScreen) {
+    return <Loading>Gerando opções de personagens...</Loading>
+  }
+
   return (
-    <S.Container onSubmit={(e) => handleSubmit(e)}>
-      <S.Text>Escolha um nome:</S.Text>
-      <S.Input
+    <Container onSubmit={(e) => handleSubmit(e)}>
+      <p>Escolha um nome:</p>
+      <input
         placeholder="Ex: Cleverson Canelafina"
         value={characterName}
         onChange={({ target }) => setCharacterName(target.value)}
         required
       />
-      <S.Text>Escolha uma classe:</S.Text>
+      <p>Escolha uma classe:</p>
       {renderClassOptions()}
-      <S.Text>Selecione um arquétipo, entre os três:</S.Text>
+      <p>Selecione um arquétipo, entre os três:</p>
       {renderCharacterOptions()}
-      <S.Button type="submit" disabled={isSubmitting}>
+      <button type="submit" disabled={isSubmitting}>
         Criar personagem
-      </S.Button>
-    </S.Container>
+      </button>
+    </Container>
   )
 }
 
