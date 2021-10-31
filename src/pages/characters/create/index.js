@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 import _ from 'lodash'
-import { useNavigate } from '@reach/router'
-const RandomOrg = require('random-org')
+import { useRouter } from 'next/router'
+import { useAppContext } from '../../../context'
 
-import { Loading } from '../../components'
+import RandomOrg from 'random-org'
+
+import { Loading } from '../../../components'
 
 import {
   pointsToAttributes,
@@ -15,12 +16,12 @@ import {
   getCharacterMotivation,
   api,
   parseClass
-} from '../../utils'
+} from '../../../utils'
 
 import * as S from './styles'
 
 const random = new RandomOrg({
-  apiKey: process.env.REACT_APP_RANDOM_ORG_API_KEY
+  apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
 })
 
 const classOptions = [
@@ -33,7 +34,7 @@ const classOptions = [
   { value: 'halfling', description: 'Halfling', emoji: '🦶' }
 ]
 
-const CreateCharacter = ({ location }) => {
+const CreateCharacter = () => {
   const [attributes, setAttributes] = useState()
   const [characterOptions, setCharacterOptions] = useState([])
   const [selectedCharacter, setSelectedCharacter] = useState()
@@ -43,15 +44,15 @@ const CreateCharacter = ({ location }) => {
   const [showLoadingScreen, setShowLoadingScreen] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedCharacterCard, setSelectedCharacterCard] = useState()
-  const navigate = useNavigate()
 
-  const { player_id } = _.defaultTo(_.get(location, 'state'), {})
+  const router = useRouter()
+  const { discordId } = useAppContext()
 
   useEffect(() => {
-    if (_.isNil(player_id)) {
-      navigate('/')
+    if (_.isNil(discordId)) {
+      router.push('/')
     }
-  }, [player_id, navigate])
+  }, [discordId, router])
 
   useEffect(() => {
     if (_.isEmpty(characterOptions)) {
@@ -198,12 +199,12 @@ const CreateCharacter = ({ location }) => {
       motivation: characterMotivation[selectedCharacter.id],
       total_hp: hp,
       current_hp: hp,
-      player_id
+      discord_id: discordId
     }
 
     api({ method: 'POST', url: '/characters', data }).then(() => {
       setIsSubmitting(false)
-      navigate('/dashboard', { state: { response: { id: player_id } } })
+      router.push('/dashboard')
     })
   }
 
@@ -229,14 +230,6 @@ const CreateCharacter = ({ location }) => {
       </S.Button>
     </S.Container>
   )
-}
-
-CreateCharacter.propTypes = {
-  location: PropTypes.shape({
-    state: {
-      player_id: PropTypes.number
-    }
-  }).isRequired
 }
 
 export default CreateCharacter

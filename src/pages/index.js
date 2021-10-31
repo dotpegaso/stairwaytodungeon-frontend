@@ -1,8 +1,16 @@
-import Login from './Login'
-import Auth from './Auth'
-import Dashboard from './Dashboard'
-import NotFound from './NotFound'
-import CreateCharacter from './CreateCharacter'
-import Character from './Character'
+import React from 'react'
+// import { isMobile } from 'react-device-detect'
 
-export { Login, Auth, Dashboard, NotFound, CreateCharacter, Character }
+import * as S from './styles'
+
+const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI}&response_type=token&scope=identify%20guilds`
+
+const Login = () => {
+  return (
+    <S.Container>
+      <a href={discordUrl}>Entrar com Discord</a>
+    </S.Container>
+  )
+}
+
+export default Login

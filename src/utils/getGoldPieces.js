@@ -1,7 +1,7 @@
 const RandomOrg = require('random-org')
 
 const random = new RandomOrg({
-  apiKey: process.env.REACT_APP_RANDOM_ORG_API_KEY
+  apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
 })
 
 export default async function getGoldPieces() {

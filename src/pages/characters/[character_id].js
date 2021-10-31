@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
-import { useNavigate } from '@reach/router'
 import { io } from 'socket.io-client'
+import { useRouter } from 'next/router'
+import { useAppContext } from '../../context'
 
 import { Loading } from '../../components'
 
@@ -17,61 +16,54 @@ import {
   api
 } from '../../utils'
 
-import d4 from '../../assets/images/d4.svg'
-import d6 from '../../assets/images/d6.svg'
-import d8 from '../../assets/images/d8.svg'
-import d10 from '../../assets/images/d10.svg'
-import d12 from '../../assets/images/d12.svg'
-import d20 from '../../assets/images/d20.svg'
-
 import * as S from './styles'
 
-const socket = io(process.env.REACT_APP_SOCKET_ENDPOINT)
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_ENDPOINT)
 
 const diceIconByValue = {
-  4: d4,
-  6: d6,
-  8: d8,
-  10: d10,
-  12: d12,
-  20: d20
+  4: '/images/d4.svg',
+  6: '/images/d6.svg',
+  8: '/images/d8.svg',
+  10: '/images/d10.svg',
+  12: '/images/d12.svg',
+  20: '/images/d20.svg'
 }
 
-function getAvatar({ id, avatar }) {
-  return `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`
+function getAvatar({ discordId, avatarHash }) {
+  return `https://cdn.discordapp.com/avatars/${discordId}/${avatarHash}.png`
 }
 
-const Character = ({ location }) => {
+const Character = () => {
   const [diceResult, setDiceResult] = useState()
   const [diceRequested, setDiceRequested] = useState(false)
   const [allyAvatar, setAllyAvatar] = useState()
   const [allyName, setAllyName] = useState()
   const [allyDice, setAllyDice] = useState()
   const [playerCharacter, setUpdatedPlayerCharacter] = useState({})
-  const navigate = useNavigate()
-  const { character, avatar, id } = _.defaultTo(
-    _.get(location, 'state.player'),
-    {}
-  )
+
+  const { discordId, avatarHash } = useAppContext()
+
+  const router = useRouter()
+  const { character_id } = router.query
 
   useEffect(() => {
-    api({ method: 'GET', url: `characters/${character.id}` }).then(
+    api({ method: 'GET', url: `characters/${character_id}` }).then(
       (response) => {
         setUpdatedPlayerCharacter(response)
       }
     )
-  }, [character.id])
+  }, [character_id])
 
   useEffect(() => {
-    if (_.isNil(id)) {
-      navigate('/')
+    if (_.isNil(discordId)) {
+      router.push('/')
     }
-  }, [id, navigate])
+  }, [discordId, router])
 
   useEffect(() => {
     socket.on('characters', () => {
       if (!_.isNil(playerCharacter)) {
-        api({ method: 'GET', url: `characters/${character.id}` }).then(
+        api({ method: 'GET', url: `characters/${character_id}` }).then(
           (response) => {
             setUpdatedPlayerCharacter(response)
           }
@@ -94,7 +86,7 @@ const Character = ({ location }) => {
         setAllyDice(null)
       }, 4000)
     })
-  }, [])
+  }, [character_id, playerCharacter])
 
   async function handleDiceRoll(dice) {
     setDiceRequested(true)
@@ -104,7 +96,7 @@ const Character = ({ location }) => {
     socket.emit('diceroll', {
       result,
       dice,
-      avatar: getAvatar({ id, avatar }),
+      avatar: getAvatar({ discordId, avatarHash }),
       name: _.get(playerCharacter, 'name')
     })
 
@@ -140,10 +132,6 @@ const Character = ({ location }) => {
       )}`}</S.Text>
 
       <S.CharacterCard>
-        <S.Gap>
-          <S.Text>Motivação:</S.Text>
-          <S.Text>{`Busca ${_.get(playerCharacter, 'motivation')}`}</S.Text>
-        </S.Gap>
         <div>{renderDescription()}</div>
 
         {_.size(_.get(playerCharacter, 'weapons')) > 0 && (
@@ -176,13 +164,13 @@ const Character = ({ location }) => {
             <S.Text>Magias:</S.Text>
             {_.get(playerCharacter, 'grimoire').map((spell, index) => {
               return _.get(spell, 'isAvailable') ? (
-                <>
+                <div key={index}>
                   <S.Text>{`✨ ${spell.name}`}</S.Text>
                   <S.Details key={index}>
                     <summary>Detalhes da magia</summary>
                     <S.Text>{`${spell.description}`}</S.Text>
                   </S.Details>
-                </>
+                </div>
               ) : (
                 <S.Text isUnavailable>{`✨ ${spell.name} - esquecida`}</S.Text>
               )
@@ -193,13 +181,13 @@ const Character = ({ location }) => {
         {_.size(_.get(playerCharacter, 'items')) > 0 && (
           <S.Gap>
             <S.Text>Items:</S.Text>
-            {_.get(playerCharacter, 'items').map((item) => {
+            {_.get(playerCharacter, 'items').map((item, index) => {
               return _.get(item, 'quantity') > 0 ? (
-                <>
-                  <S.Text>{`${item.quantity} ${item.name}`}</S.Text>
-                </>
+                <S.Text key={index}>{`${item.quantity} ${item.name}`}</S.Text>
               ) : (
-                <S.Text isUnavailable>{`${item.quantity} ${item.name}`}</S.Text>
+                <S.Text
+                  key={index}
+                  isUnavailable>{`${item.quantity} ${item.name}`}</S.Text>
               )
             })}
           </S.Gap>
@@ -216,7 +204,7 @@ const Character = ({ location }) => {
           })}`}</S.Text>
           <S.Text>{`🛡 Armadura: ${getArmorClass({
             baseArmorClass: _.get(playerCharacter, 'armor_class'),
-            weapons: _.get(playerCharacter, 'weapons'),
+            weapons: _.defaultTo(_.get(playerCharacter, 'weapons'), []),
             playerCharacter
           })}`}</S.Text>
           <S.Text>{`💠 Cristais de XP: ${_.get(

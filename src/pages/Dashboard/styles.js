@@ -1,4 +1,5 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
+import Link from 'next/link'
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const Container = styled.div`
   align-items: center;
 `
 
-export const CharacterCard = styled.div`
+export const CharacterCard = styled(Link)`
   width: calc(100% - 20%);
   margin: 0 10%;
   padding: 10px 0;

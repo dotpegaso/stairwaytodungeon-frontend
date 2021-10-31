@@ -13,11 +13,11 @@ export default function getArmorClass({
   )
 
   if (hasBonusShield) {
-    finalArmorClass += weapons.find((weapon) => _.get(weapon, 'defense_bonus'))
+    finalArmorClass -= weapons.find((weapon) => _.get(weapon, 'defense_bonus'))
       .defense_bonus
   }
 
-  finalArmorClass += getAttributeModifier(_.get(playerCharacter, 'dexterity'))
+  finalArmorClass -= getAttributeModifier(_.get(playerCharacter, 'dexterity'))
 
   return finalArmorClass
 }

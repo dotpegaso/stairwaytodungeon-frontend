@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 async function api({ method, url, data }) {
-  axios.defaults.baseURL = process.env.REACT_APP_API_URL
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
   axios.defaults.headers.common.Plaftorm = 'WEB'
 
   const result = await axios({
