@@ -2,16 +2,16 @@ import _ from 'lodash'
 import { useEffect } from 'react'
 import { api } from '../../utils'
 import { useRouter } from 'next/router'
-import { useAppContext } from '../../context'
+import { useUser } from '../../context/userContext'
 
 import { Loading } from '../../components'
 
 const Auth = () => {
   const router = useRouter()
-  const { setDiscordId, setAvatarHash } = useAppContext()
+  const { setDiscordId, setAvatarHash } = useUser()
 
   useEffect(() => {
-    router.prefetch('/dashboard')
+    router.prefetch('/welcome')
   }, [])
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Auth = () => {
     const token_type = fragment.get('token_type')
 
     if (_.isNil(access_token) || _.isNil(token_type)) {
-      return
+      return router.push('/')
     }
 
     fetch('https://discord.com/api/users/@me', {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import { io } from 'socket.io-client'
 import { useRouter } from 'next/router'
-import { useAppContext } from '../../context'
+import { useUser } from '../../context/userContext'
 
 import {
   Loading,
@@ -34,7 +34,7 @@ const Character = () => {
   const [socketIOPlayerAvatar, setSocketIOPlayerAvatar] = useState(null)
   const [socketIOPlayerName, setSocketIOPlayerName] = useState(null)
 
-  const { discordId, avatarHash } = useAppContext()
+  const { discordId, avatarHash } = useUser()
 
   const router = useRouter()
   const { character_id } = router.query
@@ -46,6 +46,12 @@ const Character = () => {
     setSocketIOPlayerAvatar(null)
     setSocketIOPlayerName(null)
   }
+
+  useEffect(() => {
+    if (_.isNil(discordId)) {
+      router.push('/')
+    }
+  }, [discordId, router])
 
   useEffect(() => {
     if (!_.isNil(character_id)) {
@@ -201,6 +207,7 @@ const Character = () => {
 
   return (
     <Container>
+      <p>{`Discord id: ${discordId}`}</p>
       <p>{_.get(characterDetails, 'name')}</p>
       <p>{parseClass(_.get(characterDetails, 'class'))}</p>
       <p>

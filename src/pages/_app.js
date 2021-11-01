@@ -1,12 +1,12 @@
 import GlobalStyle from '../styles/globalStyles'
-import { AppWrapper } from '../context'
+import { UserProvider } from '../context/userContext'
 import '../styles/colors.css'
 
 export default function App({ Component, pageProps }) {
   return (
-    <AppWrapper>
+    <UserProvider>
       <GlobalStyle />
       <Component {...pageProps} />
-    </AppWrapper>
+    </UserProvider>
   )
 }

@@ -115,7 +115,7 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Completamente ignorante sobre o mundo'
+          description: 'Super ignorante sobre o mundo'
         }
       }
 

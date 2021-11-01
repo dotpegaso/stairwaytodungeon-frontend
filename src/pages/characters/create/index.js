@@ -3,7 +3,7 @@ import RandomOrg from 'random-org'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 
-import { useAppContext } from '../../../context'
+import { useUser } from '../../../context/userContext'
 import { Loading, ListItem, Container } from '../../../components'
 
 import {
@@ -41,7 +41,13 @@ const CreateCharacter = () => {
   const [selectedCharacterCard, setSelectedCharacterCard] = useState()
 
   const router = useRouter()
-  const { discordId } = useAppContext()
+  const { discordId } = useUser()
+
+  useEffect(() => {
+    if (_.isNil(discordId)) {
+      router.push('/')
+    }
+  }, [discordId, router])
 
   useEffect(() => {
     if (_.isEmpty(characterOptions)) {
