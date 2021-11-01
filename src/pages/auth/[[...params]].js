@@ -11,6 +11,10 @@ const Auth = () => {
   const { setDiscordId, setAvatarHash } = useAppContext()
 
   useEffect(() => {
+    router.prefetch('/dashboard')
+  }, [])
+
+  useEffect(() => {
     const fragment = new URLSearchParams(window.location.hash.slice(1))
 
     if (!fragment.has('access_token')) {

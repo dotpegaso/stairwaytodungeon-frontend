@@ -65,7 +65,7 @@ const Dashboard = () => {
       {renderCharactesList()}
       <Link href="/characters/create">
         <a>Criar personagem</a>
-      </Link>{' '}
+      </Link>
     </Container>
   )
 }
