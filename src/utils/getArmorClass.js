@@ -17,11 +17,7 @@ export default function getArmorClass({
       .defense_bonus
   }
 
-  const aa = getAttributeModifier(_.get(characterDetails, 'dexterity'))
-
   finalArmorClass -= getAttributeModifier(_.get(characterDetails, 'dexterity'))
-
-  debugger
 
   return finalArmorClass
 }
