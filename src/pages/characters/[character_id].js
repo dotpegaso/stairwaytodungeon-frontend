@@ -48,16 +48,18 @@ const Character = () => {
   }
 
   useEffect(() => {
-    api({ method: 'GET', url: `characters/${character_id}` }).then(
-      (response) => {
-        setCharacterDetails(response)
-      }
-    )
+    if (!_.isNil(character_id)) {
+      api({ method: 'GET', url: `characters/${character_id}` }).then(
+        (response) => {
+          setCharacterDetails(response)
+        }
+      )
+    }
   }, [character_id])
 
   useEffect(() => {
     socket.on('characters', () => {
-      if (!_.isNil(characterDetails)) {
+      if (!_.isNil(characterDetails) && !_.isNil(character_id)) {
         api({ method: 'GET', url: `characters/${character_id}` }).then(
           (response) => {
             setCharacterDetails(response)
