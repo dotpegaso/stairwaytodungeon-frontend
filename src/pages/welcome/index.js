@@ -43,7 +43,7 @@ const Dashboard = () => {
     return characterList
       .filter((pc) => pc.isAlive)
       .map((character) => (
-        <div key={character.id} href={`/characters/${character.id}`}>
+        <a key={character.id} href={`/characters/${character.id}`}>
           <a>
             <p>{character.name}</p>
             <p>{`${parseClass(
@@ -52,7 +52,7 @@ const Dashboard = () => {
               character.experience_crystals
             )}`}</p>
           </a>
-        </div>
+        </a>
       ))
   }
 
