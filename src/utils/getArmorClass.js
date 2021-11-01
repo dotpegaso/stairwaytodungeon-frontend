@@ -4,7 +4,7 @@ import getAttributeModifier from './getAttributeModifier'
 export default function getArmorClass({
   baseArmorClass,
   weapons,
-  playerCharacter
+  characterDetails
 }) {
   let finalArmorClass = baseArmorClass
 
@@ -17,7 +17,11 @@ export default function getArmorClass({
       .defense_bonus
   }
 
-  finalArmorClass -= getAttributeModifier(_.get(playerCharacter, 'dexterity'))
+  const aa = getAttributeModifier(_.get(characterDetails, 'dexterity'))
+
+  finalArmorClass -= getAttributeModifier(_.get(characterDetails, 'dexterity'))
+
+  debugger
 
   return finalArmorClass
 }
