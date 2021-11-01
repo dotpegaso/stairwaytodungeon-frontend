@@ -45,7 +45,7 @@ const Auth = () => {
             if (_.isEmpty(res)) {
               router.push('/missing-player')
             } else {
-              router.push('/characters/1')
+              router.push('/welcome')
             }
           }
         )
