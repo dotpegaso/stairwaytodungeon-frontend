@@ -44,12 +44,6 @@ const CreateCharacter = () => {
   const { discordId } = useAppContext()
 
   useEffect(() => {
-    if (_.isNil(discordId)) {
-      router.push('/')
-    }
-  }, [discordId, router])
-
-  useEffect(() => {
     if (_.isEmpty(characterOptions)) {
       random
         .generateIntegers({

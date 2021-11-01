@@ -48,12 +48,6 @@ const Character = () => {
   }
 
   useEffect(() => {
-    if (_.isNil(discordId)) {
-      router.push('/')
-    }
-  }, [discordId, router])
-
-  useEffect(() => {
     api({ method: 'GET', url: `characters/${character_id}` }).then(
       (response) => {
         setCharacterDetails(response)

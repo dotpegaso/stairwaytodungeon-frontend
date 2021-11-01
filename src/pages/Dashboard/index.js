@@ -15,10 +15,6 @@ const Dashboard = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (_.isNil(discordId)) {
-      router.push('/')
-    }
-
     api({ method: 'GET', url: `characters?discord_id=${discordId}` }).then(
       (response) => {
         setCharacterList(response)
