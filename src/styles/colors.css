@@ -1,8 +1,33 @@
 :root {
-  --primary-background: hsl(218, 7%, 23%);
-  --secondary-background: hsl(218, 90%, 45%);
-  --primary-color: hsl(0, 0%, 80%);
-  --discord: hsl(235, 83%, 59%);
-  --error-color: hsl(0, 70%, 65%);
-  --success-color: hsl(119, 82%, 41%);
+  --green-21: hsla(196, 25%, 21%, 1);
+  --green-34: hsla(183, 21%, 34%, 1);
+  --green-52: hsla(178, 13%, 52%, 1);
+  --green-88: hsla(174, 47%, 88%, 1);
+  --red-73: hsla(358, 73%, 73%, 1);
+  --green-63: hsla(126, 59%, 63%, 1);
+  --yellow-69: hsla(42, 92%, 69%, 1);
+  --yellow-43: hsla(28, 61%, 43%, 1);
+  --purple-discord: hsla(239, 86%, 65%, 1);
+}
+
+:root {
+  --primary-background: var(--green-21);
+  --primary-text: var(--green-52);
+
+  --secondary-background: var(--green-34);
+  --secondary-text: var(--green-88);
+
+  --positive-text: var(--green-63);
+  --negative-text: var(--red-73);
+
+  --cap-background: var(--yellow-69);
+  --cap-icon: var(--yellow-43);
+
+  --discord: var(--purple-discord);
+
+  --border-radius: 8px;
+  --overlay-opacity: 80%;
+  --padding: 15px;
+  --gap: 10px;
+  --small-gap: 5px;
 }
