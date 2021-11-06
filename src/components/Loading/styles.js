@@ -16,7 +16,7 @@ const sharedStyles = css`
   align-items: center;
   justify-content: center;
   width: 100%;
-  color: var(--primary-color);
+  color: var(--secondary-text);
 `
 
 export const Container = styled.div`
@@ -34,7 +34,7 @@ export const InlineContainer = styled.div`
 `
 
 export const Text = styled.p`
-  color: var(--primary-color);
+  color: var(--secondary-text);
   font-size: 18px;
 `
 

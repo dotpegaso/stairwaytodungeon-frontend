@@ -1,4 +1,9 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const showUp = keyframes`
+ from { opacity: 0;}
+ to { opacity: 1;}
+`
 
 export const Overlay = styled.div`
   position: absolute;
@@ -6,49 +11,37 @@ export const Overlay = styled.div`
   left: 0;
   bottom: 0;
   z-index: 99;
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--black-23-opaque);
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
+  opacity: 0;
+  animation: ${showUp} 0.3s ease-in-out forwards;
 `
 
 export const Dicetray = styled.div`
   height: fit-content;
-  width: 90%;
-  border-radius: 6px;
-  background: tomato;
+  width: 100%;
+  padding: var(--padding);
+  background: var(--green-52);
   position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-around;
+  align-items: center;
+  text-transform: uppercase;
+  gap: var(--gap);
 `
 
-export const Icon = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  margin-top: 10px;
+export const Announcement = styled.p`
+  font-size: 22px;
 
   ${(props) =>
-    props.isAllyDice &&
+    props.diceResult &&
     `
-    margin: 0 auto;
-    margin-bottom: 20px;
-    width: fit-content;
-    padding: 5px 20px;
-    border-radius: 50%;
-    height: 80px;
-    width: 80px;
-    padding-top: 15px;
-    object-fit: contain;
-    position: absolute;
-    bottom: -65px;
-    right: 0;
-    left: 0;
-    background: var(--secondary-background);
+    font-size: 90px;
+    text-align: center;
   `}
-`
-
-export const Avatar = styled.img`
-  border-radius: 50%;
-  height: 50px;
 `

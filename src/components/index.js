@@ -12,6 +12,7 @@ import ItemsDetails from './ItemsDetails'
 import NotesDetails from './NotesDetails'
 import CharacterExtras from './CharacterExtras'
 import CharacterAttributes from './CharacterAttributes'
+import MagicDetails from './MagicDetails'
 
 export {
   Loading,
@@ -27,5 +28,6 @@ export {
   ItemsDetails,
   NotesDetails,
   CharacterExtras,
-  CharacterAttributes
+  CharacterAttributes,
+  MagicDetails
 }

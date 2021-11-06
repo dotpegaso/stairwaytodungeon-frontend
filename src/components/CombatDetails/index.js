@@ -7,6 +7,7 @@ import { getCombatBonus, diceRoll } from '../../utils'
 
 import DicePool from '../DicePool'
 import DiceTray from '../DiceTray'
+import MagicDetails from '../MagicDetails'
 
 import * as S from './styles'
 
@@ -18,6 +19,8 @@ const CombatDetails = () => {
   const [diceRollResult, setDiceRollResult] = useState(null)
   const [diceRollSides, setDiceRollSides] = useState(null)
   const [socketIOPlayerName, setSocketIOPlayerName] = useState(null)
+
+  const [magicDetailsRequested, setMagicDetailsRequested] = useState(null)
 
   const { characterDetails } = useCharacter()
 
@@ -47,6 +50,10 @@ const CombatDetails = () => {
     })
 
     setTimeout(() => resetRollData(), rollDataTimeout)
+  }
+
+  function handleShowMagicDetails(magic) {
+    setMagicDetailsRequested(magic)
   }
 
   function renderWeapons() {
@@ -80,7 +87,10 @@ const CombatDetails = () => {
 
     return grimoire.map((magic, index) => {
       return (
-        <S.Card key={index} isForgotten={_.get(magic, 'isForgotten')}>
+        <S.Card
+          key={index}
+          isForgotten={_.get(magic, 'isForgotten')}
+          onClick={() => handleShowMagicDetails(magic)}>
           <div>{_.get(magic, 'name')}</div>
           <S.MagicDescription>{_.get(magic, 'description')}</S.MagicDescription>
         </S.Card>
@@ -97,6 +107,11 @@ const CombatDetails = () => {
     playerName: socketIOPlayerName || _.get(characterDetails, 'name'),
     diceRollResult,
     diceRollSides
+  }
+
+  const magicDetailsProps = {
+    magic: magicDetailsRequested,
+    handleClose: () => setMagicDetailsRequested(null)
   }
 
   return (
@@ -126,25 +141,11 @@ const CombatDetails = () => {
       </S.DicePoolWrapper>
 
       {!_.isNil(diceRollResult) && <DiceTray {...diceTrayProps} />}
+      {!_.isNil(magicDetailsRequested) && (
+        <MagicDetails {...magicDetailsProps} />
+      )}
     </>
   )
 }
 
 export default CombatDetails
-
-// [
-//   {
-//     "name": "Mísseis Mágicos",
-//     "duration": null,
-//     "save": null,
-//     "description": "Um míssil mágico é....",
-//     "isAvailable": false
-//   },
-//   {
-//     "name": "Encantar Pessoas",
-//     "duration": null,
-//     "save": "spell",
-//     "description": "Este feitiço afetará...",
-//     "isAvailable": true
-//   }
-// ]

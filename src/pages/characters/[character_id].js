@@ -226,19 +226,19 @@ const Character = () => {
         description: 'Combate',
         isActive: option === 'combat',
         shallow: true
-      },
-      {
-        path: `${baseUrl}?option=items`,
-        description: 'Itens',
-        isActive: option === 'items',
-        shallow: true
-      },
-      {
-        path: `${baseUrl}?option=notes`,
-        description: 'Notas',
-        isActive: option === 'notes',
-        shallow: true
       }
+      // {
+      //   path: `${baseUrl}?option=items`,
+      //   description: 'Itens',
+      //   isActive: option === 'items',
+      //   shallow: true
+      // },
+      // {
+      //   path: `${baseUrl}?option=notes`,
+      //   description: 'Notas',
+      //   isActive: option === 'notes',
+      //   shallow: true
+      // }
     ]
   }
 

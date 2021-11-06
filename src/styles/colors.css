@@ -9,6 +9,7 @@
   --yellow-43: hsla(28, 61%, 43%, 1);
   --purple-discord: hsla(239, 86%, 65%, 1);
   --black-23: hsla(218, 7%, 23%, 1);
+  --black-23-opaque: hsla(218, 7%, 23%, .7);
 }
 
 :root {
