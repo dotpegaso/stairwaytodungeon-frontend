@@ -1,22 +1,22 @@
 export default function parseClass(characterClass) {
   if (characterClass === 'cleric') {
-    return 'Clérigo(a)'
+    return '🛡 Clérigo(a)'
   }
   if (characterClass === 'fighter') {
-    return 'Guerreiro(a)'
+    return '⚔️ Guerreiro(a)'
   }
   if (characterClass === 'magic-user') {
-    return 'Mago(a)'
+    return '🧙‍♂️ Mago(a)'
   }
   if (characterClass === 'thief') {
-    return 'Ladino(a)'
+    return '🗡 Ladino(a)'
   }
   if (characterClass === 'dwarf') {
-    return 'Anão/Anã'
+    return '⛏ Anão/Anã'
   }
   if (characterClass === 'elf') {
-    return 'Elfo(a)'
+    return '🧝‍♂️ Elfo(a)'
   }
 
-  return 'Halfling'
+  return '🍀 Halfling'
 }

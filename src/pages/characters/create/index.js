@@ -21,13 +21,13 @@ const random = new RandomOrg({
 })
 
 const classOptions = [
-  { value: 'cleric', emoji: '🛡' },
-  { value: 'fighter', emoji: '⚔️' },
-  { value: 'magic-user', emoji: '🧙‍♂️' },
-  { value: 'thief', emoji: '🗡' },
-  { value: 'dwarf', emoji: '🌋' },
-  { value: 'elf', emoji: '🧝‍♂️' },
-  { value: 'halfling', emoji: '🦶' }
+  { value: 'cleric' },
+  { value: 'fighter' },
+  { value: 'magic-user' },
+  { value: 'thief' },
+  { value: 'dwarf' },
+  { value: 'elf' },
+  { value: 'halfling' }
 ]
 
 const CreateCharacter = () => {
@@ -42,12 +42,6 @@ const CreateCharacter = () => {
 
   const router = useRouter()
   const { discordId } = useUser()
-
-  useEffect(() => {
-    if (_.isNil(discordId)) {
-      router.push('/')
-    }
-  }, [discordId, router])
 
   useEffect(() => {
     if (_.isEmpty(characterOptions)) {
@@ -130,7 +124,7 @@ const CreateCharacter = () => {
             key={index}
             isSelected={option.value === characterClass}
             onClick={() => setCharacterClass(option.value)}>
-            {option.emoji} {parseClass(option.value)}
+            {parseClass(option.value)}
           </div>
         ))}
       </>
@@ -168,7 +162,7 @@ const CreateCharacter = () => {
 
     api({ method: 'POST', url: '/characters', data }).then(() => {
       setIsSubmitting(false)
-      router.push('/dashboard')
+      router.push('/welcome')
     })
   }
 

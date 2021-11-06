@@ -15,6 +15,11 @@ const GlobalStyles = createGlobalStyle`
   body {
     background-color: var(--primary-background);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Saint Regus';
+  }
+
+  a {
+    text-decoration: none;
   }
 
   a,p, h1, h2, li {

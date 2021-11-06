@@ -1,27 +1,21 @@
-import _ from 'lodash'
-import React, { useState } from 'react'
+import React from 'react'
+import Link from 'next/link'
 
 import * as S from './styles'
 
-const Menu = ({ options, onChange }) => {
-  const [activeOptionIndex, setActiveOptionIndex] = useState(0)
-
-  function handleOnClick({ index, optionValue }) {
-    setActiveOptionIndex(index)
-    onChange(optionValue)
-  }
-
+const Menu = ({ options }) => {
   return (
     <S.Menu>
       {options.map((option, index) => (
-        <S.MenuOption
-          onClick={() =>
-            handleOnClick({ index, optionValue: _.get(option, 'value') })
-          }
-          isActive={activeOptionIndex === index}
-          key={index}>
-          {option.description}
-        </S.MenuOption>
+        <Link
+          key={index}
+          href={option.path}
+          shallow={option.shallow}
+          replace={option.shallow}>
+          <S.MenuOption isActive={option.isActive}>
+            {option.description}
+          </S.MenuOption>
+        </Link>
       ))}
     </S.Menu>
   )

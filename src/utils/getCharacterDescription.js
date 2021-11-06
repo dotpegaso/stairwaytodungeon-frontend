@@ -54,32 +54,65 @@ export default function getCharacterDescription(character) {
     return list
   }
 
+  function getIconByAttribute(attribute) {
+    if (attribute === 'strength') {
+      return '💪'
+    }
+    if (attribute === 'constituition') {
+      return '🫀'
+    }
+    if (attribute === 'dexterity') {
+      return '⚡️'
+    }
+    if (attribute === 'intelligence') {
+      return ' 🧠 '
+    }
+    if (attribute === 'wisdom') {
+      return '🌏'
+    }
+    if (attribute === 'charisma') {
+      return '👄'
+    }
+  }
+
   function parseAttribute({ attribute, value }) {
     if (attribute === 'strength') {
       if (value === -3) {
         return {
           value,
-          description: 'Praticamente não tem força física'
+          attribute,
+          description: `Praticamente não tem força física ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'Possui baixa força física'
+          attribute,
+          description: `Possui baixa força física ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Possui uma força física absurda'
+          attribute,
+          description: `Possui uma força física absurda ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: 'Possui uma boa força física'
+        attribute,
+        description: `Possui uma boa força física ${getIconByAttribute(
+          attribute
+        )}`
       }
     }
 
@@ -87,27 +120,37 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Mal sabe falar'
+          attribute,
+          description: `Mal sabe falar ${getIconByAttribute(attribute)}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'Não sabe ler, nem escrever'
+          attribute,
+          description: `Não sabe ler, nem escrever ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Consegue falar 4 línguas'
+          attribute,
+          description: `Consegue falar 4 línguas ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: `Consegue falar ${value + 1} línguas`
+        attribute,
+        description: `Consegue falar ${value + 1} línguas ${getIconByAttribute(
+          attribute
+        )}`
       }
     }
 
@@ -115,27 +158,37 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Super ignorante sobre o mundo'
+          attribute,
+          description: `Super ignorante sobre o mundo ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'Tem um baixo conhecimento geral'
+          attribute,
+          description: `Tem um baixo conhecimento geral ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Conhece muito bem o mundo'
+          attribute,
+          description: `Conhece muito bem o mundo ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: 'Conhece bem o mundo'
+        attribute,
+        description: `Conhece bem o mundo ${getIconByAttribute(attribute)}`
       }
     }
 
@@ -143,27 +196,39 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Mal consegue mirar e se desviar'
+          attribute,
+          description: `Mal consegue mirar e se desviar ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'Tem dificuldade pra mirar e desviar'
+          attribute,
+          description: `Tem dificuldade pra mirar e desviar ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Mira e se esquiva de olhos fechados'
+          attribute,
+          description: `Mira e se esquiva de olhos fechados ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: 'Tem uma boa mira e um bom reflexo'
+        attribute,
+        description: `Tem uma boa mira e um bom reflexo ${getIconByAttribute(
+          attribute
+        )}`
       }
     }
 
@@ -171,27 +236,37 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Está constantemente doente'
+          attribute,
+          description: `Está constantemente doente ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'Tem uma saúde meio ruim'
+          attribute,
+          description: `Tem uma saúde meio ruim ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Tem uma saúde incrível!'
+          attribute,
+          description: `Tem uma saúde incrível! ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: 'Tem uma saúde boa'
+        attribute,
+        description: `Tem uma saúde boa ${getIconByAttribute(attribute)}`
       }
     }
 
@@ -199,27 +274,35 @@ export default function getCharacterDescription(character) {
       if (value === -3) {
         return {
           value,
-          description: 'Tem uma péssima lábia'
+          attribute,
+          description: `Tem uma péssima lábia ${getIconByAttribute(attribute)}`
         }
       }
 
       if (value < 0) {
         return {
           value,
-          description: 'É um pouco ruim de lábia'
+          attribute,
+          description: `É um pouco ruim de lábia ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       if (value === 3) {
         return {
           value,
-          description: 'Engana quase qualquer um'
+          attribute,
+          description: `Engana quase qualquer um ${getIconByAttribute(
+            attribute
+          )}`
         }
       }
 
       return {
         value,
-        description: 'É bom de lábia'
+        attribute,
+        description: `É bom de lábia ${getIconByAttribute(attribute)}`
       }
     }
   }

@@ -3,13 +3,19 @@ import _ from 'lodash'
 import { io } from 'socket.io-client'
 import { useRouter } from 'next/router'
 import { useUser } from '../../context/userContext'
+import { useCharacter } from '../../context/characterContext'
 
 import {
   Loading,
   ListItem,
   Container,
   DiceTray,
-  DicePool
+  DicePool,
+  Menu,
+  CharacterDetails,
+  CombatDetails,
+  ItemsDetails,
+  NotesDetails
 } from '../../components'
 
 import {
@@ -27,17 +33,21 @@ const socket = io(process.env.NEXT_PUBLIC_SOCKET_ENDPOINT)
 const rollDataTimeout = 3600
 
 const Character = () => {
-  const [characterDetails, setCharacterDetails] = useState({})
+  const { characterDetails, setCharacterDetails } = useCharacter()
+  const [menuOption, setMenuOption] = useState('character')
+
   const [diceRollRequested, setDiceRollRequested] = useState(false)
   const [diceRollResult, setDiceRollResult] = useState(null)
   const [diceRollSides, setDiceRollSides] = useState(null)
+
   const [socketIOPlayerAvatar, setSocketIOPlayerAvatar] = useState(null)
   const [socketIOPlayerName, setSocketIOPlayerName] = useState(null)
 
   const { discordId, avatarHash } = useUser()
 
   const router = useRouter()
-  const { character_id } = router.query
+  const { character_id, option } = router.query
+  const baseUrl = `/characters/${character_id}`
 
   function resetRollData() {
     setDiceRollRequested(false)
@@ -48,12 +58,6 @@ const Character = () => {
   }
 
   useEffect(() => {
-    if (_.isNil(discordId)) {
-      router.push('/')
-    }
-  }, [discordId, router])
-
-  useEffect(() => {
     if (!_.isNil(character_id)) {
       api({ method: 'GET', url: `characters/${character_id}` }).then(
         (response) => {
@@ -61,7 +65,7 @@ const Character = () => {
         }
       )
     }
-  }, [character_id])
+  }, [character_id, setCharacterDetails])
 
   useEffect(() => {
     socket.on('characters', () => {
@@ -85,7 +89,11 @@ const Character = () => {
 
       setTimeout(() => resetRollData(), rollDataTimeout)
     })
-  }, [character_id, characterDetails])
+  }, [character_id, characterDetails, setCharacterDetails])
+
+  useEffect(() => {
+    setMenuOption(option)
+  }, [option])
 
   async function handleDiceRoll(dice) {
     setDiceRollRequested(true)
@@ -205,48 +213,43 @@ const Character = () => {
     return <Loading>Carregando personagem</Loading>
   }
 
+  const menuProps = {
+    options: [
+      {
+        path: `${baseUrl}?option=character`,
+        description: 'Personagem',
+        isActive: option === 'character',
+        shallow: true
+      },
+      {
+        path: `${baseUrl}?option=combat`,
+        description: 'Combate',
+        isActive: option === 'combat',
+        shallow: true
+      },
+      {
+        path: `${baseUrl}?option=items`,
+        description: 'Itens',
+        isActive: option === 'items',
+        shallow: true
+      },
+      {
+        path: `${baseUrl}?option=notes`,
+        description: 'Notas',
+        isActive: option === 'notes',
+        shallow: true
+      }
+    ]
+  }
+
   return (
-    <Container>
-      <p>{`Discord id: ${discordId}`}</p>
-      <p>{_.get(characterDetails, 'name')}</p>
-      <p>{parseClass(_.get(characterDetails, 'class'))}</p>
-      <p>
-        {getLevelByExperienceCrystals(
-          _.get(characterDetails, 'experience_crystals')
-        )}
-      </p>
+    <Container withMenu>
+      {menuOption === 'character' && <CharacterDetails />}
+      {menuOption === 'combat' && <CombatDetails />}
+      {menuOption === 'items' && <ItemsDetails />}
+      {menuOption === 'notes' && <NotesDetails />}
 
-      <div>{renderDescription()}</div>
-
-      <div>{renderWeapons()}</div>
-
-      <div>{renderGrimoire()}</div>
-
-      <div>{renderItems()}</div>
-
-      <p>Extra:</p>
-      <p>{`💰 ${_.get(characterDetails, 'gold_pieces')}`}</p>
-      <p>{`🏏 THAC0: ${getThaco({
-        characterClass: _.get(characterDetails, 'class'),
-        level: getLevelByExperienceCrystals(
-          _.get(characterDetails, 'experience_crystals')
-        )
-      })}`}</p>
-      <p>{`🛡 Armadura: ${getArmorClass({
-        baseArmorClass: _.get(characterDetails, 'armor_class'),
-        weapons: _.defaultTo(_.get(characterDetails, 'weapons'), []),
-        characterDetails
-      })}`}</p>
-      <p>{`💠 Cristais de XP: ${_.get(
-        characterDetails,
-        'experience_crystals'
-      )} `}</p>
-      <p>{`👤 Já foi: ${_.get(characterDetails, 'occupation')}`}</p>
-      {_.get(characterDetails, 'first_weapon') && (
-        <p>{`✋ Equipamento: ${_.get(characterDetails, 'first_weapon')}`}</p>
-      )}
-
-      <div>{renderDicePool()}</div>
+      <Menu {...menuProps} />
 
       {!_.isNil(diceRollResult) && renderDiceTray()}
     </Container>

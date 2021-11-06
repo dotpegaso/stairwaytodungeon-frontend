@@ -12,7 +12,7 @@ const Auth = () => {
 
   useEffect(() => {
     router.prefetch('/welcome')
-  }, [])
+  }, [router])
 
   useEffect(() => {
     const fragment = new URLSearchParams(window.location.hash.slice(1))
@@ -45,6 +45,9 @@ const Auth = () => {
             if (_.isEmpty(res)) {
               router.push('/missing-player')
             } else {
+              localStorage.setItem('discord_id', discord_id)
+              localStorage.setItem('avatar_hash', avatar)
+
               router.push('/welcome')
             }
           }

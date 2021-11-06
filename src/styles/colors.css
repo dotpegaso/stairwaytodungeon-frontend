@@ -8,10 +8,11 @@
   --yellow-69: hsla(42, 92%, 69%, 1);
   --yellow-43: hsla(28, 61%, 43%, 1);
   --purple-discord: hsla(239, 86%, 65%, 1);
+  --black-23: hsla(218, 7%, 23%, 1);
 }
 
 :root {
-  --primary-background: var(--green-21);
+  --primary-background: var(--black-23);
   --primary-text: var(--green-52);
 
   --secondary-background: var(--green-34);
@@ -28,6 +29,7 @@
   --border-radius: 8px;
   --overlay-opacity: 80%;
   --padding: 15px;
+  --small-padding: 10px;
   --gap: 10px;
   --small-gap: 5px;
 }

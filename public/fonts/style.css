@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Saint Regus';
+  src: url('font.woff');
+  src: url('font.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}

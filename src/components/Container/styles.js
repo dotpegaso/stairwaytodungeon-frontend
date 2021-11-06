@@ -5,6 +5,12 @@ export const Container = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 20px;
   height: 100%;
+  position: relative;
+
+  ${({ withMenu }) =>
+    withMenu &&
+    `
+    padding-bottom: 80px;
+  `}
 `

@@ -12,6 +12,7 @@ import getCharacterMotivation from './getCharacterMotivation'
 import getThaco from './getThaco'
 import getArmorClass from './getArmorClass'
 import getAvatar from './getAvatar'
+import getCombatBonus from './getCombatBonus'
 
 export {
   api,
@@ -27,5 +28,6 @@ export {
   getCharacterMotivation,
   getThaco,
   getArmorClass,
-  getAvatar
+  getAvatar,
+  getCombatBonus
 }
