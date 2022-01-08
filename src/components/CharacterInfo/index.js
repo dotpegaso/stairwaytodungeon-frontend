@@ -6,12 +6,13 @@ import { getLevelByExperienceCrystals, parseClass } from '../../utils'
 
 import * as S from './styles'
 
-const CharacterExtras = () => {
+const CharacterInfo = () => {
   const { characterDetails } = useCharacter()
   const experienceCrystals = _.get(characterDetails, 'experience_crystals')
 
   return (
     <S.Container>
+      <p>{`📁 Ex ${_.get(characterDetails, 'occupation')}`}</p>
       <p>{`${parseClass(
         _.get(characterDetails, 'class')
       )} de nível ${getLevelByExperienceCrystals(experienceCrystals)}`}</p>
@@ -21,4 +22,4 @@ const CharacterExtras = () => {
   )
 }
 
-export default CharacterExtras
+export default CharacterInfo

@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const animationShake = keyframes`
   0%, 57% { transform: translateY(0); }
@@ -9,35 +9,13 @@ export const animationShake = keyframes`
   100% { transform: translateY(0); }
 `
 
-const sharedStyles = css`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
+export const LoadingContainer = styled.div`
+  height: 100vh;
   width: 100%;
-  color: var(--secondary-text);
+  display: grid;
+  place-items: center;
 `
 
-export const Container = styled.div`
-  ${sharedStyles}
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 99;
-  background: var(--primary-background);
-`
-
-export const InlineContainer = styled.div`
-  ${sharedStyles}
-`
-
-export const Text = styled.p`
-  color: var(--secondary-text);
-  font-size: 18px;
-`
-
-export const Image = styled.img`
+export const LoadingIcon = styled.img`
   animation: ${animationShake} 3s infinite;
 `

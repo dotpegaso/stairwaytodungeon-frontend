@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
-import { io } from 'socket.io-client'
 import { useRouter } from 'next/router'
 import { useUser } from '../../context/userContext'
 import { useCharacter } from '../../context/characterContext'
+
+import { socket } from '../../pages/_app'
 
 import {
   Loading,
@@ -15,7 +16,15 @@ import {
   CharacterDetails,
   CombatDetails,
   ItemsDetails,
-  NotesDetails
+  NotesDetails,
+  CharacterSelector,
+  CharacterInfo,
+  CharacterAttributes,
+  DayPeriodBadge,
+  Board,
+  LoadingContainer,
+  MissingPlayer,
+  Prompt
 } from '../../components'
 
 import {
@@ -29,7 +38,6 @@ import {
   api
 } from '../../utils'
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_ENDPOINT)
 const rollDataTimeout = 3600
 
 const Character = () => {
@@ -46,7 +54,7 @@ const Character = () => {
   const { discordId, avatarHash } = useUser()
 
   const router = useRouter()
-  const { character_id, option } = router.query
+  const { character_id } = router.query
   const baseUrl = `/characters/${character_id}`
 
   function resetRollData() {
@@ -58,18 +66,12 @@ const Character = () => {
   }
 
   useEffect(() => {
-    if (!_.isNil(character_id)) {
-      api({ method: 'GET', url: `characters/${character_id}` }).then(
-        (response) => {
-          setCharacterDetails(response)
-        }
-      )
-    }
-  }, [character_id, setCharacterDetails])
-
-  useEffect(() => {
     socket.on('characters', () => {
-      if (!_.isNil(characterDetails) && !_.isNil(character_id)) {
+      if (
+        !_.isNil(characterDetails) &&
+        !_.isNil(character_id) &&
+        Number(character_id) !== 0
+      ) {
         api({ method: 'GET', url: `characters/${character_id}` }).then(
           (response) => {
             setCharacterDetails(response)
@@ -90,10 +92,6 @@ const Character = () => {
       setTimeout(() => resetRollData(), rollDataTimeout)
     })
   }, [character_id, characterDetails, setCharacterDetails])
-
-  useEffect(() => {
-    setMenuOption(option)
-  }, [option])
 
   async function handleDiceRoll(dice) {
     setDiceRollRequested(true)
@@ -209,49 +207,27 @@ const Character = () => {
     return <DicePool {...dicePoolProps} />
   }
 
-  if (_.isEmpty(characterDetails)) {
-    return <Loading>Carregando personagem</Loading>
-  }
-
-  const menuProps = {
-    options: [
-      {
-        path: `${baseUrl}?option=character`,
-        description: 'Personagem',
-        isActive: option === 'character',
-        shallow: true
-      },
-      {
-        path: `${baseUrl}?option=combat`,
-        description: 'Combate',
-        isActive: option === 'combat',
-        shallow: true
-      }
-      // {
-      //   path: `${baseUrl}?option=items`,
-      //   description: 'Itens',
-      //   isActive: option === 'items',
-      //   shallow: true
-      // },
-      // {
-      //   path: `${baseUrl}?option=notes`,
-      //   description: 'Notas',
-      //   isActive: option === 'notes',
-      //   shallow: true
-      // }
-    ]
-  }
-
   return (
     <Container withMenu>
-      {menuOption === 'character' && <CharacterDetails />}
+      {/* {menuOption === 'character' &&}
       {menuOption === 'combat' && <CombatDetails />}
       {menuOption === 'items' && <ItemsDetails />}
-      {menuOption === 'notes' && <NotesDetails />}
+      {menuOption === 'notes' && <NotesDetails />} */}
 
-      <Menu {...menuProps} />
+      {/* <Menu {...menuProps} /> */}
 
+      {/* <CharacterSelector />
+      <Board small />
+      {!_.isEmpty(characterDetails) && (
+        <>
+          <CharacterInfo />
+          <CharacterAttributes />
+          <CombatDetails />
+        </>
+      )}
+      <DayPeriodBadge />
       {!_.isNil(diceRollResult) && renderDiceTray()}
+       */}
     </Container>
   )
 }

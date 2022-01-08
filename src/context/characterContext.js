@@ -3,11 +3,17 @@ import { createContext, useContext, useState } from 'react'
 const CharacterContext = createContext()
 
 export function CharacterProvider({ children }) {
-  const [characterDetails, setCharacterDetails] = useState({})
+  const [characterDetails, setCharacterDetails] = useState()
+  const [characterList, setCharacterList] = useState([])
+  const [isLoadingCharacterList, setIsLoadingCharacterList] = useState(true)
 
   const value = {
     characterDetails,
-    setCharacterDetails
+    setCharacterDetails,
+    characterList,
+    setCharacterList,
+    isLoadingCharacterList,
+    setIsLoadingCharacterList
   }
 
   return (

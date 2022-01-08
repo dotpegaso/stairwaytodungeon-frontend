@@ -4,59 +4,65 @@ import { api } from '../../utils'
 import { useRouter } from 'next/router'
 import { useUser } from '../../context/userContext'
 
-import { Loading } from '../../components'
+import { Prompt } from '../../components'
+
+import {
+  characterPoolRoute,
+  errorRoute,
+  forbiddenRoute
+} from '../../utils/shared'
 
 const Auth = () => {
   const router = useRouter()
   const { setDiscordId, setAvatarHash } = useUser()
 
   useEffect(() => {
-    router.prefetch('/welcome')
-  }, [router])
-
-  useEffect(() => {
     const fragment = new URLSearchParams(window.location.hash.slice(1))
 
     if (!fragment.has('access_token')) {
-      return
+      return null
     }
 
-    const access_token = fragment.get('access_token')
-    const token_type = fragment.get('token_type')
+    const accessToken = fragment.get('access_token')
+    const tokenType = fragment.get('token_type')
 
-    if (_.isNil(access_token) || _.isNil(token_type)) {
-      return router.push('/')
+    if (_.isNil(accessToken) || _.isNil(tokenType)) {
+      return router.push(errorRoute)
+    }
+
+    function handleRouteChange(route) {
+      return router.push(route, undefined, { shallow: true })
     }
 
     fetch('https://discord.com/api/users/@me', {
       headers: {
-        authorization: `${token_type} ${access_token}`
+        authorization: `${tokenType} ${accessToken}`
       }
     })
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((response) => {
-        const { id: discord_id, avatar } = response
+        const { id, avatar } = response
 
-        setDiscordId(discord_id)
+        setDiscordId(id)
         setAvatarHash(avatar)
 
-        api({ method: 'GET', url: `players?discord_id=${discord_id}` }).then(
-          (res) => {
-            if (_.isEmpty(res)) {
-              router.push('/missing-player')
-            } else {
-              localStorage.setItem('discord_id', discord_id)
-              localStorage.setItem('avatar_hash', avatar)
-
-              router.push('/welcome')
+        api({ method: 'GET', url: `players?discord_id=${id}` }).then(
+          (response) => {
+            if (_.isEmpty(response)) {
+              return handleRouteChange(forbiddenRoute)
             }
+
+            localStorage.setItem('discord_id', id)
+            localStorage.setItem('avatar_hash', avatar)
+
+            return handleRouteChange(characterPoolRoute)
           }
         )
       })
-      .catch((err) => console.error('Auth error: ', err))
+      .catch(() => handleRouteChange(errorRoute))
   }, [router, setAvatarHash, setDiscordId])
 
-  return <Loading>Verificando...</Loading>
+  return <Prompt>Carregando...</Prompt>
 }
 
 export default Auth

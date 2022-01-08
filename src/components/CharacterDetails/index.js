@@ -3,7 +3,7 @@ import React from 'react'
 import { useCharacter } from '../../context/characterContext'
 
 import CharacterName from '../CharacterName'
-import CharacterExtras from '../CharacterExtras'
+import CharacterInfo from '../CharacterInfo'
 import CharacterAttributes from '../CharacterAttributes'
 
 import * as S from './styles'
@@ -22,7 +22,7 @@ const CharacterDetails = () => {
             'occupation'
           )}`}</S.Occupation>
         </div>
-        <CharacterExtras />
+        <CharacterInfo />
       </S.Header>
       <CharacterAttributes />
     </>

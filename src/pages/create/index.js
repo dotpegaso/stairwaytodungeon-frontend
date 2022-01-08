@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import RandomOrg from 'random-org'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 
-import { useUser } from '../../../context/userContext'
-import { Loading, ListItem, Container } from '../../../components'
+import { useUser } from '../../context/userContext'
+import { random } from '../_app'
+
+import { Prompt } from '../../components'
 
 import {
   pointsToAttributes,
@@ -14,11 +15,7 @@ import {
   getCharacterDescription,
   parseClass,
   api
-} from '../../../utils'
-
-const random = new RandomOrg({
-  apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
-})
+} from '../../utils'
 
 const classOptions = [
   { value: 'cleric' },
@@ -30,18 +27,25 @@ const classOptions = [
   { value: 'halfling' }
 ]
 
-const CreateCharacter = () => {
-  const [attributes, setAttributes] = useState()
+const Create = () => {
+  const { discordId } = useUser()
+  const router = useRouter()
+
   const [characterOptions, setCharacterOptions] = useState([])
+  const [attributes, setAttributes] = useState()
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState(
+    'Gerando 3 personagens...'
+  )
   const [characterName, setCharacterName] = useState()
   const [characterClass, setCharacterClass] = useState()
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [selectedCharacter, setSelectedCharacter] = useState()
-  const [selectedCharacterCard, setSelectedCharacterCard] = useState()
+  const [selectedCharacter, setSelectedCharacter] = useState({})
 
-  const router = useRouter()
-  const { discordId } = useUser()
+  useEffect(() => {
+    if (!_.isEmpty(characterOptions)) {
+      setIsLoading(false)
+    }
+  }, [characterOptions])
 
   useEffect(() => {
     if (_.isEmpty(characterOptions)) {
@@ -81,33 +85,24 @@ const CreateCharacter = () => {
     initCharacter()
   }, [attributes, characterOptions])
 
-  useEffect(() => {
-    if (!_.isEmpty(characterOptions)) {
-      setShowLoadingScreen(false)
-    }
-  }, [characterOptions])
-
-  function handleCharacterSelection({ character, index }) {
-    setSelectedCharacter(character)
-    setSelectedCharacterCard(index)
+  if (isLoading) {
+    return <Prompt>{loadingMessage}</Prompt>
   }
 
   function renderCharacterOptions() {
     return characterOptions.map((character, index) => (
       <div
-        onClick={() =>
-          handleCharacterSelection({ character, index: character.id })
-        }
-        isSelected={selectedCharacterCard === character.id}
+        onClick={() => setSelectedCharacter({ character, index: character.id })}
+        isSelected={selectedCharacter.index === character.id}
         key={index}>
         <div>
           {getCharacterDescription(character).map((attribute, index) => (
-            <ListItem
+            <div
               key={index}
               isPositive={attribute.value === 3}
               isNegative={attribute.value === -3}>
               {attribute.description}
-            </ListItem>
+            </div>
           ))}
         </div>
         <p>{`💰 Carrega ${character.gold_pieces} moedas de ouro`}</p>
@@ -131,9 +126,9 @@ const CreateCharacter = () => {
     )
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    e.stopPropagation()
+  function handleSubmit({ preventDefault, stopPropagation }) {
+    preventDefault()
+    stopPropagation()
 
     if (_.isNil(characterName)) {
       return alert('Adicione um nome')
@@ -143,16 +138,17 @@ const CreateCharacter = () => {
       return alert('Selecione uma classe')
     }
 
-    if (_.isNil(selectedCharacter)) {
+    if (_.isNil(selectedCharacter.character)) {
       return alert('Selecione um arquétipo')
     }
 
-    setIsSubmitting(true)
+    setLoadingMessage('Criando personagem...')
+    setIsLoading(true)
 
     const hp = getHitPointsByClass(characterClass)
 
     const data = {
-      ...selectedCharacter,
+      ...selectedCharacter.character,
       name: characterName,
       class: characterClass,
       total_hp: hp,
@@ -161,21 +157,13 @@ const CreateCharacter = () => {
     }
 
     api({ method: 'POST', url: '/characters', data }).then(() => {
-      setIsSubmitting(false)
-      router.push('/welcome')
+      setIsLoading(false)
+      router.push('/')
     })
   }
 
-  if (isSubmitting) {
-    return <Loading>Criando personagem...</Loading>
-  }
-
-  if (showLoadingScreen) {
-    return <Loading>Gerando opções de personagens...</Loading>
-  }
-
   return (
-    <Container onSubmit={(e) => handleSubmit(e)}>
+    <form onSubmit={handleSubmit}>
       <p>Escolha um nome:</p>
       <input
         placeholder="Ex: Cleverson Canelafina"
@@ -187,11 +175,11 @@ const CreateCharacter = () => {
       {renderClassOptions()}
       <p>Selecione um arquétipo, entre os três:</p>
       {renderCharacterOptions()}
-      <button type="submit" disabled={isSubmitting}>
+      <button type="submit" disabled={isLoading}>
         Criar personagem
       </button>
-    </Container>
+    </form>
   )
 }
 
-export default CreateCharacter
+export default Create
