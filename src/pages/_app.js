@@ -4,6 +4,8 @@ import RandomOrg from 'random-org'
 import GlobalStyle from '../styles/globalStyles'
 import { UserProvider } from '../context/userContext'
 import { CharacterProvider } from '../context/characterContext'
+import { CreateCharacterProvider } from '../context/createCharacterContext'
+import { DiceProvider } from '../context/diceContext'
 
 import '../styles/colors.css'
 
@@ -22,10 +24,14 @@ export default function App({ Component, pageProps }) {
 
   return (
     <UserProvider>
-      <CharacterProvider>
-        <GlobalStyle dayPeriod={dayPeriod} />
-        <Component {...pageProps} />
-      </CharacterProvider>
+      <DiceProvider>
+        <CharacterProvider>
+          <CreateCharacterProvider>
+            <GlobalStyle dayPeriod={dayPeriod} />
+            <Component {...pageProps} />
+          </CreateCharacterProvider>
+        </CharacterProvider>
+      </DiceProvider>
     </UserProvider>
   )
 }

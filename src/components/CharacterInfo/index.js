@@ -12,7 +12,7 @@ const CharacterInfo = () => {
 
   return (
     <S.Container>
-      <p>{`📁 Ex ${_.get(characterDetails, 'occupation')}`}</p>
+      <p>{`👤 Ex ${_.get(characterDetails, 'occupation')}`}</p>
       <p>{`${parseClass(
         _.get(characterDetails, 'class')
       )} de nível ${getLevelByExperienceCrystals(experienceCrystals)}`}</p>

@@ -4,18 +4,17 @@
   --white-90: hsla(0, 0%, 50%, 1);
 
   --green-88: hsla(174, 47%, 88%, 1);
-  --green-63: hsla(126, 59%, 63%, 1);
+  --green-37: hsl(126, 54%, 37%);
   --green-52: hsla(178, 13%, 52%, 1);
   --green-34: hsla(183, 21%, 34%, 1);
   --green-21: hsla(196, 25%, 21%, 1);
 
-  --red-73: hsla(358, 73%, 73%, 1);
+  --red-44: hsl(358, 50%, 44%);
 
   --yellow-69: hsla(42, 92%, 69%, 1);
   --yellow-43: hsla(28, 61%, 43%, 1);
 
   --black-23: hsla(218, 7%, 23%, 1);
-  --black-23-opaque: hsla(218, 7%, 23%, .7);
 
   --purple-discord: hsla(239, 86%, 65%, 1);
 }
@@ -27,13 +26,15 @@
   --secondary-background: var(--white-99);
   --secondary-text: var(--green-88);
 
-  --positive-text: var(--green-63);
-  --negative-text: var(--red-73);
+  --positive-text: var(--green-37);
+  --negative-text: var(--red-44);
 
   --cap-background: var(--yellow-69);
   --cap-icon: var(--yellow-43);
 
   --discord: var(--purple-discord);
+
+  --border-color: var(--black-23);
 
   --border-radius: 8px;
   --overlay-opacity: 80%;
@@ -41,9 +42,11 @@
   --small-padding: 10px;
   --gap: 10px;
   --small-gap: 5px;
-  --box-shadow: 0px 0px 1px var(--white-90);
+  --box-shadow: 5px 5px 0px var(--black-23);
 
   --day-period-dawn: linear-gradient(to bottom, #6A7693, #E0B985);
-  --day-period-day: linear-gradient(to bottom, #426B97, #8CB6DB);;
-  --day-period-night: linear-gradient(to bottom, #413D58, #AC6439 70%);;
+  --day-period-day: linear-gradient(to bottom, #426B97, #8CB6DB);
+  --day-period-night: linear-gradient(to bottom, #413D58, #AC6439 70%);
+
+  --rainbow: #ffe580 4.38%,#ff7571 11.51%,#ff7270 25.06%,#ea5dad 36.04%,#c2a0fd 47.63%,#9867f0 59.03%,#3bf0e4 69.96%,#33ce43 83.74%,#b2f4b6 95.62%;
 }

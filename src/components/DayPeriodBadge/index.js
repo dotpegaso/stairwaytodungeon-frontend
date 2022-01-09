@@ -23,7 +23,7 @@ const DayPeriodBadge = () => {
     setCurrentDayPeriod(day_period)
   })
 
-  return <img src={getDayPeriodIcon()} alt={currentDayPeriod} />
+  return <S.Icon src={getDayPeriodIcon()} alt={currentDayPeriod} />
 }
 
 export default DayPeriodBadge

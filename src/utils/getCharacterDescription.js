@@ -81,9 +81,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Praticamente não tem força física ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Muito fracote`
         }
       }
 
@@ -91,9 +89,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Possui baixa força física ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Meio fracote`
         }
       }
 
@@ -101,18 +97,14 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Possui uma força física absurda ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Muito forte`
         }
       }
 
       return {
         value,
         attribute,
-        description: `Possui uma boa força física ${getIconByAttribute(
-          attribute
-        )}`
+        description: `${getIconByAttribute(attribute)} Meio forte`
       }
     }
 
@@ -121,7 +113,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Mal sabe falar ${getIconByAttribute(attribute)}`
+          description: `${getIconByAttribute(attribute)} Mal sabe falar`
         }
       }
 
@@ -129,9 +121,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Não sabe ler, nem escrever ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Não lê, nem escreve`
         }
       }
 
@@ -139,18 +129,16 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Consegue falar 4 línguas ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Fala 4 idiomas`
         }
       }
 
       return {
         value,
         attribute,
-        description: `Consegue falar ${value + 1} línguas ${getIconByAttribute(
-          attribute
-        )}`
+        description: `${getIconByAttribute(attribute)} Fala ${
+          value + 1
+        } idiomas`
       }
     }
 
@@ -159,9 +147,9 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Super ignorante sobre o mundo ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} Zero conhecimento geral`
         }
       }
 
@@ -169,9 +157,9 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Tem um baixo conhecimento geral ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} Baixo conhecimento geral`
         }
       }
 
@@ -179,16 +167,18 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Conhece muito bem o mundo ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} Ótimos conhecimentos gerais`
         }
       }
 
       return {
         value,
         attribute,
-        description: `Conhece bem o mundo ${getIconByAttribute(attribute)}`
+        description: `${getIconByAttribute(
+          attribute
+        )} Conhecimento geral razoável`
       }
     }
 
@@ -197,9 +187,9 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Mal consegue mirar e se desviar ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} Horrível pra mirar e se desviar`
         }
       }
 
@@ -207,9 +197,9 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Tem dificuldade pra mirar e desviar ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} É ruim pra mirar e desviar`
         }
       }
 
@@ -217,18 +207,16 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Mira e se esquiva de olhos fechados ${getIconByAttribute(
+          description: `${getIconByAttribute(
             attribute
-          )}`
+          )} Mira e reflexos excelentes`
         }
       }
 
       return {
         value,
         attribute,
-        description: `Tem uma boa mira e um bom reflexo ${getIconByAttribute(
-          attribute
-        )}`
+        description: `${getIconByAttribute(attribute)} Mira e reflexos normais`
       }
     }
 
@@ -237,9 +225,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Está constantemente doente ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Tem uma saúde péssima`
         }
       }
 
@@ -247,9 +233,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Tem uma saúde meio ruim ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Tem uma saúde ruim`
         }
       }
 
@@ -257,16 +241,14 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Tem uma saúde incrível! ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Tem uma saúde incrível`
         }
       }
 
       return {
         value,
         attribute,
-        description: `Tem uma saúde boa ${getIconByAttribute(attribute)}`
+        description: `${getIconByAttribute(attribute)} Tem uma saúde boa`
       }
     }
 
@@ -275,7 +257,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Tem uma péssima lábia ${getIconByAttribute(attribute)}`
+          description: `${getIconByAttribute(attribute)} Péssima lábia`
         }
       }
 
@@ -283,9 +265,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `É um pouco ruim de lábia ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Um pouco ruim de lábia`
         }
       }
 
@@ -293,16 +273,14 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `Engana quase qualquer um ${getIconByAttribute(
-            attribute
-          )}`
+          description: `${getIconByAttribute(attribute)} Incrível na lábia`
         }
       }
 
       return {
         value,
         attribute,
-        description: `É bom de lábia ${getIconByAttribute(attribute)}`
+        description: `${getIconByAttribute(attribute)} Bom de lábia`
       }
     }
   }

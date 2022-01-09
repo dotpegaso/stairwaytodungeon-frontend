@@ -1,12 +1,15 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  font-size: 1rem;
-  line-height: 1.7;
   display: flex;
-  gap: var(--gap);
+  flex-wrap: wrap;
+  gap: 15px;
 
   p {
-    color: var(--green-52);
+    color: var(--primary-text);
+    background: var(--white-97);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 16px;
   }
 `

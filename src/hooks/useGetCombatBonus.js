@@ -1,6 +1,8 @@
 import _ from 'lodash'
 
-import getAttributeModifier from './getAttributeModifier'
+import { useCharacter } from '../context/characterContext'
+
+import getAttributeModifier from '../utils/getAttributeModifier'
 
 function sumWeaponBonuses({ weapons, type }) {
   return _.sumBy(
@@ -11,7 +13,9 @@ function sumWeaponBonuses({ weapons, type }) {
   )
 }
 
-export default function getCombatBonus(characterDetails) {
+export default function useGetCombatBonus() {
+  const { characterDetails } = useCharacter()
+
   const weapons = _.defaultTo(_.get(characterDetails, 'weapons'), [])
   const strength = _.get(characterDetails, 'strength')
   const dexterity = _.get(characterDetails, 'dexterity')
@@ -25,19 +29,26 @@ export default function getCombatBonus(characterDetails) {
   const totalRangedDamage =
     dexterityModifier + sumWeaponBonuses({ weapons, type: 'ranged' })
 
-  const response = `${
-    totalMeleeDamage !== 0
-      ? `⚔️ Rolagem & dano corpo-a-corpo: ${
-          totalMeleeDamage > 0 ? `+${totalMeleeDamage}` : totalMeleeDamage
-        }`
-      : ''
-  } ‎ ${
-    totalRangedDamage !== 0
-      ? `🏹 Rolagem à distância: ${
-          totalRangedDamage > 0 ? `+${totalRangedDamage}` : totalRangedDamage
-        }`
-      : ''
-  }`
+  const totalMeleeBonus =
+    totalMeleeDamage > 0 ? `+${totalMeleeDamage}` : totalMeleeDamage
 
-  return response
+  const totalRangedBonus =
+    totalRangedDamage > 0 ? `+${totalRangedDamage}` : totalRangedDamage
+
+  const totalMeleeDescription =
+    totalMeleeDamage !== 0
+      ? `⚔️ Rolagem & dano corpo-a-corpo: ${totalMeleeBonus}`
+      : null
+
+  const totalRangedDescription =
+    totalRangedDamage !== 0
+      ? `🏹 Rolagem à distância: ${totalRangedBonus}`
+      : null
+
+  return {
+    totalMeleeBonus,
+    totalRangedBonus,
+    totalMeleeDescription,
+    totalRangedDescription
+  }
 }

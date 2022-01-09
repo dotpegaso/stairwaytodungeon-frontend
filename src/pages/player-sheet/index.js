@@ -1,50 +1,89 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import _ from 'lodash'
 
+import { Prompt, Button, Sheet, DiceTray } from '../../components'
+
+import { api } from '../../utils'
 import { useGetCharacterList } from '../../hooks'
 import { useCharacter } from '../../context/characterContext'
 
-import { Prompt, CharacterDetails } from '../../components'
+import { socket } from '../_app'
+
+function emitConnectedCharacter(character_id) {
+  socket.emit('connectedCharacter', { character_id })
+}
 
 const PlayerSheet = () => {
   useGetCharacterList()
 
+  const [characterToLoad, setCharacterToLoad] = useState(null)
+
   const {
     isLoadingCharacterList,
     characterList,
-    setCharacterDetails
+    setCharacterDetails,
+    characterDetails
   } = useCharacter()
 
-  const characterToLoad = characterList.find((character) => character.isAlive)
+  useEffect(() => {
+    setCharacterToLoad(characterList.find((character) => character.isAlive))
+  }, [characterList])
 
   useEffect(() => {
-    setCharacterDetails(characterToLoad)
+    if (!_.isNil(characterToLoad)) {
+      setCharacterDetails(characterToLoad)
+      emitConnectedCharacter(characterToLoad.id)
+    }
+  }, [characterToLoad, setCharacterDetails])
+
+  useEffect(() => {
+    if (_.get(characterDetails, 'isAlive') === false) {
+      setCharacterToLoad(null)
+      setCharacterDetails(null)
+    }
+  }, [characterDetails, setCharacterDetails, setCharacterToLoad])
+
+  useEffect(() => {
+    socket.on('characters', () => {
+      const characterId = _.get(characterToLoad, 'id')
+
+      if (!_.isNil(characterId)) {
+        api({
+          method: 'GET',
+          url: `characters/${characterId}`
+        }).then((response) => {
+          setCharacterDetails(response)
+        })
+      }
+    })
   }, [characterToLoad, setCharacterDetails])
 
   if (isLoadingCharacterList) {
     return <Prompt>Carregando personagens...</Prompt>
   }
 
-  const isCharacterMissing = _.isNil(characterToLoad)
+  const isCharacterMissing = _.isNil(characterDetails)
 
   if (isCharacterMissing) {
-    const isCharacterListEmpty = _.isEmpty(characterList)
-
     return (
       <Prompt>
-        {isCharacterListEmpty
-          ? 'Nenhum personagem encontrado'
-          : 'Todos morreram'}
-        <br />
+        Todos estão mortos
         <Link href="/create">
-          <a>Criar personagem</a>
+          <a>
+            <Button>Criar personagem</Button>
+          </a>
         </Link>
       </Prompt>
     )
   }
 
-  return <CharacterDetails />
+  return (
+    <>
+      <Sheet />
+      <DiceTray />
+    </>
+  )
 }
 
 export default PlayerSheet

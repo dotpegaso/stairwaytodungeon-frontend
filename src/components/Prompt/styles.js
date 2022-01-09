@@ -20,11 +20,15 @@ export const Container = styled.div`
 
 export const Text = styled.p`
   color: black;
-  margin-top: 15px;
+  height: 50px;
   max-width: 450px;
   text-align: center;
   line-height: 1.4;
   opacity: 0;
   animation: ${slideUp} 0.5s ease-in-out forwards;
   animation-delay: 0.3s;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  gap: 20px;
 `

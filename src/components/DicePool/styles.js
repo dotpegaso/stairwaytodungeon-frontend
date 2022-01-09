@@ -1,8 +1,14 @@
 import styled from 'styled-components'
 
+export const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+`
+
 export const Dice = styled.button`
   height: 70px;
-  width: 100%;
+  width: fit-content;
   background: transparent;
   border: none;
   color: var(--primary-color);
@@ -12,7 +18,7 @@ export const Dice = styled.button`
   align-items: center;
 
   :active {
-    background: #000;
+    background: var(--white-97);
   }
 
   ${(props) =>

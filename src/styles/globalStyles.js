@@ -13,18 +13,19 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background: ${(props) => `var(--day-period-${props.dayPeriod})`};
     transition: background-color 1000ms linear;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     /* font-family: 'Saint Regus'; */
+    user-select: none;
   }
 
   a {
     text-decoration: none;
   }
 
-  a,p, h1, h2, li {
+  a, p, h1, h2, li {
     color: var(--primary-text);
+    margin: 0;
   }
 
 .whiteboard {

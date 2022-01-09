@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React from 'react'
 import { useCharacter } from '../../context/characterContext'
 
-import { getCharacterDescription } from '../../utils'
+import { getCharacterDescription, parseAttributes } from '../../utils'
 
 import * as S from './styles'
 
@@ -13,9 +13,10 @@ const CharacterAttributes = () => {
     <S.Container>
       {getCharacterDescription(characterDetails || []).map((item, index) => (
         <S.Attribute
+          pseudotext={parseAttributes(item.attribute)}
           key={index}
-          isPositive={_.get(item, 'value') === 3}
-          isNegative={_.get(item, 'value') === -3}>
+          positive={_.get(item, 'value') === 3}
+          negative={_.get(item, 'value') === -3}>
           {_.get(item, 'description')}
         </S.Attribute>
       ))}

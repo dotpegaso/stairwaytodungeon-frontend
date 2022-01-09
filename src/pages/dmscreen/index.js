@@ -58,7 +58,7 @@ const DMScreen = () => {
 
   return (
     <>
-      <Board />
+      {/* <Board /> */}
       {`current: ${currentDayPeriod}`}
       <hr />
       <button onClick={() => handleDayPeriodChange('dawn')}>dawn</button>
@@ -98,21 +98,6 @@ const DMScreen = () => {
             type="number"
             name="armor_class"
             defaultValue={character.armor_class}
-          />
-          <label>items</label>
-          <textarea
-            name="items"
-            defaultValue={JSON.stringify(character.items)}
-          />
-          <label>weapons</label>
-          <textarea
-            name="weapons"
-            defaultValue={JSON.stringify(character.weapons)}
-          />
-          <label>grimoire</label>
-          <textarea
-            name="items"
-            defaultValue={JSON.stringify(character.grimoire)}
           />
           <button>update char</button>
         </form>

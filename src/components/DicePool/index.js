@@ -1,4 +1,11 @@
-import React from 'react'
+import { useEffect } from 'react'
+import _ from 'lodash'
+
+import { useCharacter } from '../../context/characterContext'
+import { useDice } from '../../context/diceContext'
+
+import { diceRoll } from '../../utils'
+import { socket } from '../../pages/_app'
 
 import * as S from './styles'
 
@@ -11,14 +18,62 @@ const diceIconByValue = {
   20: '/images/d20.svg'
 }
 
-const Dicepool = ({ diceRollRequested, handleDiceRoll }) =>
-  [4, 6, 8, 10, 12, 20].map((dice, index) => (
-    <S.Dice
-      key={index}
-      disabled={diceRollRequested}
-      onClick={() => handleDiceRoll(dice)}>
-      <S.Icon src={diceIconByValue[dice]} />
-    </S.Dice>
-  ))
+const rollDataTimeout = 4600
+
+const Dicepool = () => {
+  const { characterDetails } = useCharacter()
+
+  const {
+    diceRollRequested,
+    setDiceRollRequested,
+    setDiceRollSides,
+    setDiceRollResult,
+    setSocketIOPlayerName,
+    resetRollData
+  } = useDice()
+
+  useEffect(() => {
+    socket.on('diceroll', function (socketIOPlayer) {
+      setDiceRollRequested(true)
+
+      setSocketIOPlayerName(socketIOPlayer.name)
+
+      setDiceRollSides(socketIOPlayer.dice)
+      setDiceRollResult(socketIOPlayer.result)
+
+      setTimeout(() => resetRollData(), rollDataTimeout)
+    })
+  })
+
+  async function handleDiceRoll(dice) {
+    setDiceRollRequested(true)
+
+    const result = await diceRoll(dice)
+
+    setDiceRollSides(dice)
+    setDiceRollResult(result)
+
+    socket.emit('diceroll', {
+      result,
+      dice,
+      name: _.get(characterDetails, 'name')
+    })
+
+    setTimeout(() => resetRollData(), rollDataTimeout)
+  }
+
+  return (
+    <S.Container>
+      {[4, 6, 8, 10, 12, 20].map((dice, index) => (
+        <S.Dice
+          key={index}
+          disabled={diceRollRequested}
+          onClick={() => handleDiceRoll(dice)}>
+          <S.Icon src={diceIconByValue[dice]} />
+        </S.Dice>
+      ))}
+    </S.Container>
+  )
+}
 
 export default Dicepool

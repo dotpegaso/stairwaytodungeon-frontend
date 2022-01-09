@@ -20,6 +20,9 @@ import Board from './Board'
 import MissingPlayer from './MissingPlayer'
 
 import Prompt from './Prompt'
+import NewCharacter from './NewCharacter'
+import Button from './Button'
+import Sheet from './Sheet'
 
 export {
   Loading,
@@ -42,5 +45,8 @@ export {
   Board,
   LoadingContainer,
   MissingPlayer,
-  Prompt
+  Prompt,
+  NewCharacter,
+  Button,
+  Sheet
 }
