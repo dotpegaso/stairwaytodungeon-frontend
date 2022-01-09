@@ -18,6 +18,7 @@ export const Input = styled.input`
   background: transparent;
   border: 2px solid var(--border-color);
   padding: 15px;
+  width: 220px;
   font-size: 16px;
 `
 
@@ -60,6 +61,7 @@ export const CharacterCard = styled.div`
   gap: 15px;
   box-shadow: var(--box-shadow);
   transition: all 0.2s ease;
+  cursor: pointer;
 
   ${(props) =>
     props.selected &&
@@ -90,7 +92,7 @@ export const CharacterDescription = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  height: 200px;
+  height: 230px;
 `
 
 export const CharacterAttribute = styled.div`
