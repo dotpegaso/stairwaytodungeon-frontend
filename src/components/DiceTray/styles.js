@@ -15,6 +15,17 @@ export const gradientShift = keyframes`
   }
 `
 
+export const slideIn = keyframes`
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+  100% {
+    opacity: 1;
+    top: -60px;
+  }
+`
+
 export const rainbowEffect = css`
   background: linear-gradient(45deg, var(--rainbow));
   background-position: 58% 50%;
@@ -63,26 +74,22 @@ export const Dicetray = styled.div`
 export const Announcement = styled.div`
   font-size: 22px;
 
-  ${(props) =>
-    props.diceResult &&
-    `
+  p {
+    ${(props) =>
+      props.diceResult &&
+      `
     font-size: 90px;
     text-align: center;
   `}
 
-  ${(props) =>
-    props.diceResult === 20 &&
-    css`
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      ${rainbowEffect}
-    `}
-
-  ${(props) =>
-    props.diceResult === 1 &&
-    `
-    color: var(--red-44);
-  `}
+    ${(props) =>
+      props.diceResult === 20 &&
+      css`
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        ${rainbowEffect}
+      `}
+  }
 `
 
 export const Badge = styled.div`
@@ -100,4 +107,15 @@ export const Badge = styled.div`
 export const Flex = styled.div`
   display: flex;
   gap: 5px;
+`
+
+export const Image = styled.img`
+  position: absolute;
+  height: 100%;
+  right: 50%;
+  left: 50%;
+  top: 80px;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: ${slideIn} 2s ease forwards;
 `

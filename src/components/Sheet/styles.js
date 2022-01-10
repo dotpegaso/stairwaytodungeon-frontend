@@ -77,7 +77,9 @@ export const Badge = styled.p`
   padding: 4px 10px;
   font-size: 16px;
   width: fit-content;
-  height: fit-content;
+  height: 35px;
+  display: grid;
+  place-items: center;
 `
 
 export const Box = styled.div`

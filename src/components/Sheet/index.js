@@ -9,6 +9,8 @@ import { useCharacter } from '../../context/characterContext'
 
 import { useGetCombatBonus } from '../../hooks'
 
+import { getThaco, getArmorClass } from '../../utils'
+
 import * as S from './styles'
 
 const Sheet = () => {
@@ -18,6 +20,8 @@ const Sheet = () => {
   const weapons = _.defaultTo(_.get(characterDetails, 'weapons'), [])
   const grimoire = _.defaultTo(_.get(characterDetails, 'grimoire'), [])
   const items = _.defaultTo(_.get(characterDetails, 'items'), [])
+  const level = _.defaultTo(_.get(characterDetails, 'level'), 0)
+  const characterClass = _.get(characterDetails, 'class')
 
   const remainingHitPoints =
     (100 * _.get(characterDetails, 'current_hp')) /
@@ -38,7 +42,13 @@ const Sheet = () => {
 
           <S.BigText>COMBATE</S.BigText>
 
-          <S.FlexContainer>
+          <S.FlexContainer wrap>
+            <S.Badge>
+              {`🏏 THAC0 ${getThaco({ characterClass, level })}`}
+            </S.Badge>
+            <S.Badge>
+              {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
+            </S.Badge>
             {!_.isNil(totalMeleeDescription) && (
               <S.Badge>{totalMeleeDescription}</S.Badge>
             )}

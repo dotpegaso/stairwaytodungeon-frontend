@@ -47,6 +47,9 @@ const DiceTray = () => {
             )}
           </S.Flex>
         </S.Announcement>
+        {diceRollSides === 20 && diceRollResult === 1 && (
+          <S.Image src="/images/pepe.png" />
+        )}
       </S.Dicetray>
     </S.Overlay>
   )

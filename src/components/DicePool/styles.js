@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const Dice = styled.button`
   height: 70px;
-  width: fit-content;
+  width: 100px;
   background: transparent;
   border: none;
   color: var(--primary-color);
@@ -26,6 +26,10 @@ export const Dice = styled.button`
     `
     opacity: .5;
   `}
+
+  @media screen and (max-width: 490px) {
+    width: fit-content;
+  }
 `
 
 export const Icon = styled.img`

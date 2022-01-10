@@ -11,5 +11,8 @@ export const Container = styled.div`
     border-radius: 20px;
     padding: 4px 10px;
     font-size: 16px;
+    height: 35px;
+    display: grid;
+    place-items: center;
   }
 `
