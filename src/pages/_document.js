@@ -32,14 +32,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link href="/fonts/style.css" rel="stylesheet" />
-          <link
-            rel="preload"
-            href="/fonts/font.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
+          <title>Stairway to Dungeon</title>
         </Head>
         <body>
           <Main />
