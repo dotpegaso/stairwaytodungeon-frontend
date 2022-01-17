@@ -4,6 +4,7 @@ import CharacterAttributes from '../CharacterAttributes'
 import CharacterInfo from '../CharacterInfo'
 import DicePool from '../DicePool'
 import DayPeriodBadge from '../DayPeriodBadge'
+import Notes from '../Notes'
 
 import { useCharacter } from '../../context/characterContext'
 
@@ -29,89 +30,88 @@ const Sheet = () => {
 
   return (
     <S.Container opacity={remainingHitPoints}>
-      <S.Flex>
-        <S.Flex primary column>
-          <S.Name>
-            <DayPeriodBadge /> {_.get(characterDetails, 'name')}
-          </S.Name>
+      <S.Flex column>
+        <S.Name>
+          <DayPeriodBadge /> {_.get(characterDetails, 'name')}
+        </S.Name>
 
-          <CharacterInfo />
+        <CharacterInfo />
 
-          <S.BigText>ATRIBUTOS</S.BigText>
-          <CharacterAttributes />
+        <S.BigText>ATRIBUTOS</S.BigText>
+        <CharacterAttributes />
 
-          <S.BigText>COMBATE</S.BigText>
+        <S.BigText>COMBATE</S.BigText>
 
-          <S.FlexContainer wrap>
-            <S.Badge>
-              {`🏏 THAC0 ${getThaco({ characterClass, level })}`}
-            </S.Badge>
-            <S.Badge>
-              {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
-            </S.Badge>
-            {!_.isNil(totalMeleeDescription) && (
-              <S.Badge>{totalMeleeDescription}</S.Badge>
-            )}
-            {!_.isNil(totalRangedDescription) && (
-              <S.Badge>{totalRangedDescription}</S.Badge>
-            )}
-          </S.FlexContainer>
-
-          <S.FlexContainer>
-            <DicePool />
-          </S.FlexContainer>
-
-          {!_.isEmpty(weapons) && (
-            <>
-              <S.BigText>EQUIPAMENTOS</S.BigText>
-
-              <S.FlexContainer>
-                {weapons.map((weapon, index) => (
-                  <S.Box key={index}>
-                    <p>{`Nome: ${weapon.name}`}</p>
-                    {!_.isNil(weapon.damage) && (
-                      <p>{`Dano: ${weapon.damage} ${
-                        weapon.attack_bonus ? `+ ${weapon.attack_bonus}` : ''
-                      }`}</p>
-                    )}
-                    {!_.isNil(weapon.defense_bonus) && (
-                      <p>{`Defesa: +${weapon.defense_bonus}`}</p>
-                    )}
-                  </S.Box>
-                ))}
-              </S.FlexContainer>
-            </>
+        <S.FlexContainer wrap>
+          <S.Badge>{`🏏 THAC0 ${getThaco({ characterClass, level })}`}</S.Badge>
+          <S.Badge>
+            {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
+          </S.Badge>
+          {!_.isNil(totalMeleeDescription) && (
+            <S.Badge>{totalMeleeDescription}</S.Badge>
           )}
-
-          {!_.isEmpty(grimoire) && (
-            <>
-              <S.BigText>MAGIAS</S.BigText>
-
-              <S.FlexContainer>
-                {grimoire.map((magic, index) => (
-                  <S.Box key={index}>
-                    <p>{`Nome: ${magic.name}`}</p>
-                  </S.Box>
-                ))}
-              </S.FlexContainer>
-            </>
+          {!_.isNil(totalRangedDescription) && (
+            <S.Badge>{totalRangedDescription}</S.Badge>
           )}
+        </S.FlexContainer>
 
-          {!_.isEmpty(items) && (
-            <>
-              <S.BigText>ITENS</S.BigText>
+        <S.FlexContainer>
+          <DicePool />
+        </S.FlexContainer>
 
-              <S.FlexContainer>
-                {items.map((item, index) => (
-                  <S.Box key={index}>
-                    <p>{`Nome: ${item.name}`}</p>
-                    <p>{`Quantidade: ${item.quantity}`}</p>
-                  </S.Box>
-                ))}
-              </S.FlexContainer>
-            </>
-          )}
-        </S.Flex>
+        {!_.isEmpty(weapons) && (
+          <>
+            <S.BigText>EQUIPAMENTOS</S.BigText>
+
+            <S.FlexContainer>
+              {weapons.map((weapon, index) => (
+                <S.Box key={index}>
+                  <p>{`Nome: ${weapon.name}`}</p>
+                  {!_.isNil(weapon.damage) && (
+                    <p>{`Dano: ${weapon.damage} ${
+                      weapon.attack_bonus ? `+ ${weapon.attack_bonus}` : ''
+                    }`}</p>
+                  )}
+                  {!_.isNil(weapon.defense_bonus) && (
+                    <p>{`Defesa: +${weapon.defense_bonus}`}</p>
+                  )}
+                </S.Box>
+              ))}
+            </S.FlexContainer>
+          </>
+        )}
+
+        {!_.isEmpty(grimoire) && (
+          <>
+            <S.BigText>MAGIAS</S.BigText>
+
+            <S.FlexContainer>
+              {grimoire.map((magic, index) => (
+                <S.Box key={index}>
+                  <p>{`Nome: ${magic.name}`}</p>
+                </S.Box>
+              ))}
+            </S.FlexContainer>
+          </>
+        )}
+
+        {!_.isEmpty(items) && (
+          <>
+            <S.BigText>ITENS</S.BigText>
+
+            <S.FlexContainer>
+              {items.map((item, index) => (
+                <S.Box key={index}>
+                  <p>{`Nome: ${item.name}`}</p>
+                  <p>{`Quantidade: ${item.quantity}`}</p>
+                </S.Box>
+              ))}
+            </S.FlexContainer>
+          </>
+        )}
+
+        <S.BigText>ANOTAÇÕES</S.BigText>
+        <Notes />
       </S.Flex>
     </S.Container>
   )

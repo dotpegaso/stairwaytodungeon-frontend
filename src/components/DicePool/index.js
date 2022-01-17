@@ -29,7 +29,8 @@ const Dicepool = () => {
     setDiceRollSides,
     setDiceRollResult,
     setSocketIOPlayerName,
-    resetRollData
+    resetRollData,
+    diceRollSides
   } = useDice()
 
   useEffect(() => {
@@ -46,11 +47,11 @@ const Dicepool = () => {
   })
 
   async function handleDiceRoll(dice) {
+    setDiceRollSides(dice)
     setDiceRollRequested(true)
 
     const result = await diceRoll(dice)
 
-    setDiceRollSides(dice)
     setDiceRollResult(result)
 
     socket.emit('diceroll', {
@@ -68,6 +69,7 @@ const Dicepool = () => {
         <S.Dice
           key={index}
           disabled={diceRollRequested}
+          selected={dice === diceRollSides}
           onClick={() => handleDiceRoll(dice)}>
           <S.Icon src={diceIconByValue[dice]} />
         </S.Dice>

@@ -19,6 +19,7 @@ export const Container = styled.div`
   display: grid;
   gap: 20px;
   margin-top: 2%;
+  padding-bottom: 10%;
   transition: all 0.5s ease-in-out;
 
   ${(props) =>
@@ -42,7 +43,6 @@ export const Flex = styled.div`
   padding: 10px;
 
   ${(props) => props.column && 'flex-direction: column;'}
-  ${(props) => props.primary && 'flex: 2;'}
 
   @media screen and (max-width: 490px) {
     flex-direction: column;

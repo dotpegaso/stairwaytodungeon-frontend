@@ -1,4 +1,13 @@
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
+
+const animationRoll = keyframes`
+ from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+`
 
 export const Container = styled.div`
   display: flex;
@@ -16,16 +25,28 @@ export const Dice = styled.button`
   border-radius: 6px;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: 0.2s all ease;
 
-  :active {
+  :hover {
     background: var(--white-97);
   }
 
   ${(props) =>
     props.disabled &&
-    `
-    opacity: .5;
-  `}
+    css`
+      opacity: 0.5;
+
+      :hover {
+        background: transparent;
+      }
+
+      ${props.selected &&
+      css`
+        animation: ${animationRoll} 0.4s linear forwards;
+        animation-iteration-count: 16;
+      `}
+    `}
 
   @media screen and (max-width: 490px) {
     width: fit-content;
@@ -37,6 +58,7 @@ export const Icon = styled.img`
   height: 100%;
   object-fit: contain;
   margin-top: 10px;
+  transform-origin: center;
 
   ${(props) =>
     props.isAllyDice &&

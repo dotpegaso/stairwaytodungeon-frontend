@@ -11,6 +11,7 @@ import Prompt from './Prompt'
 import NewCharacter from './NewCharacter'
 import Button from './Button'
 import Sheet from './Sheet'
+import Notes from './Notes'
 
 export {
   Loading,
@@ -26,5 +27,6 @@ export {
   Prompt,
   NewCharacter,
   Button,
-  Sheet
+  Sheet,
+  Notes
 }
