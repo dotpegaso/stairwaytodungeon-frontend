@@ -18,6 +18,7 @@ const PlayerSheet = () => {
   useGetCharacterList()
 
   const [characterToLoad, setCharacterToLoad] = useState(null)
+  const [image, setImage] = useState([])
 
   const {
     isLoadingCharacterList,
@@ -59,6 +60,15 @@ const PlayerSheet = () => {
     })
   }, [characterToLoad, setCharacterDetails])
 
+  useEffect(() => {
+    socket.on('imageUpload', ({ image }) => {
+      const img = (window.URL || window.webkitURL).createObjectURL(
+        new Blob([image], { type: 'image/png' })
+      )
+      setImage(img)
+    })
+  }, [])
+
   if (isLoadingCharacterList) {
     return <Prompt>Carregando personagens...</Prompt>
   }
@@ -80,6 +90,7 @@ const PlayerSheet = () => {
 
   return (
     <>
+      <img src={image} />
       <Sheet />
       <DiceTray />
     </>
@@ -87,3 +98,11 @@ const PlayerSheet = () => {
 }
 
 export default PlayerSheet
+
+// var img = document.createElement('img')
+// img.src = (window.URL || window.webkitURL).createObjectURL(
+//   new Blob([src], { type: 'image/png' })
+// )
+// img.width = 200
+// img.height = 200
+// document.querySelector('div').append(img)

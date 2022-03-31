@@ -43,8 +43,8 @@ export const Dice = styled.button`
 
       ${props.selected &&
       css`
-        animation: ${animationRoll} 0.4s linear forwards;
-        animation-iteration-count: 16;
+        animation: ${animationRoll} 0.35s linear forwards;
+        animation-iteration-count: 20;
       `}
     `}
 

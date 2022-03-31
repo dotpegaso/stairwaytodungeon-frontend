@@ -2,7 +2,7 @@ import { io } from 'socket.io-client'
 import { useState } from 'react'
 import _ from 'lodash'
 
-import { Board } from '../../components'
+import { Board, Dropzone } from '../../components'
 
 import { api } from '../../utils'
 
@@ -59,6 +59,7 @@ const DMScreen = () => {
   return (
     <>
       {/* <Board /> */}
+      <Dropzone />
       {`current: ${currentDayPeriod}`}
       <hr />
       <button onClick={() => handleDayPeriodChange('dawn')}>dawn</button>

@@ -35,13 +35,30 @@ const NewCharacter = () => {
   function stepOne() {
     return (
       <S.Form onSubmit={preventSubmit}>
-        <S.Text>Vamos começar com um nome:</S.Text>
-        <S.Input
-          placeholder="Ex: Cleverson Canelafina"
-          defaultValue={characterName}
-          onChange={({ target }) => setCharacterName(target.value)}
-          required
-        />
+        <S.Text>Começamos com um arquétipo:</S.Text>
+        <S.CharacterContainer>
+          {characterOptions.map((character, index) => (
+            <S.CharacterCard
+              onClick={() =>
+                setSelectedCharacter({ character, index: character.id })
+              }
+              selected={selectedCharacter.index === character.id}
+              key={index}>
+              <S.CharacterDescription>
+                {getCharacterDescription(character).map((attribute, index) => (
+                  <S.CharacterAttribute
+                    key={index}
+                    positive={attribute.value === 3}
+                    negative={attribute.value === -3}>
+                    {attribute.description}
+                  </S.CharacterAttribute>
+                ))}
+              </S.CharacterDescription>
+              <div>{`💰 ${character.gold_pieces} moedas de ouro`}</div>
+              <div>{`👤 Ex ${character.occupation}`}</div>
+            </S.CharacterCard>
+          ))}
+        </S.CharacterContainer>
         <Button>Continuar</Button>
       </S.Form>
     )
@@ -86,30 +103,13 @@ const NewCharacter = () => {
   function stepThree() {
     return (
       <S.Form onSubmit={handleSubmit}>
-        <S.Text>Selecione um arquétipo:</S.Text>
-        <S.CharacterContainer>
-          {characterOptions.map((character, index) => (
-            <S.CharacterCard
-              onClick={() =>
-                setSelectedCharacter({ character, index: character.id })
-              }
-              selected={selectedCharacter.index === character.id}
-              key={index}>
-              <S.CharacterDescription>
-                {getCharacterDescription(character).map((attribute, index) => (
-                  <S.CharacterAttribute
-                    key={index}
-                    positive={attribute.value === 3}
-                    negative={attribute.value === -3}>
-                    {attribute.description}
-                  </S.CharacterAttribute>
-                ))}
-              </S.CharacterDescription>
-              <div>{`💰 ${character.gold_pieces} moedas de ouro`}</div>
-              <div>{`👤 Ex ${character.occupation}`}</div>
-            </S.CharacterCard>
-          ))}
-        </S.CharacterContainer>
+        <S.Text>Vamos finalizar com um nome:</S.Text>
+        <S.Input
+          placeholder="Ex: Cleverson Canelafina"
+          defaultValue={characterName}
+          onChange={({ target }) => setCharacterName(target.value)}
+          required
+        />
         <S.ButtonContainer>
           <Button type="button" onClick={() => setStep(2)}>
             Voltar

@@ -12,6 +12,7 @@ import NewCharacter from './NewCharacter'
 import Button from './Button'
 import Sheet from './Sheet'
 import Notes from './Notes'
+import Dropzone from './Dropzone'
 
 export {
   Loading,
@@ -28,5 +29,6 @@ export {
   NewCharacter,
   Button,
   Sheet,
-  Notes
+  Notes,
+  Dropzone
 }
