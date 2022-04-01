@@ -216,7 +216,7 @@ export default function getCharacterDescription(character) {
       return {
         value,
         attribute,
-        description: `${getIconByAttribute(attribute)} Mira e reflexos normais`
+        description: `${getIconByAttribute(attribute)} Boa mira e reflexos`
       }
     }
 
