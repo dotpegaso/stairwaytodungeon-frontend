@@ -55,7 +55,7 @@ const NewCharacter = () => {
                 ))}
               </S.CharacterDescription>
               <div>{`💰 ${character.gold_pieces} moedas de ouro`}</div>
-              <div>{`👤 Ex ${character.occupation}`}</div>
+              <div>{`👤 Já foi ${character.occupation}`}</div>
             </S.CharacterCard>
           ))}
         </S.CharacterContainer>
