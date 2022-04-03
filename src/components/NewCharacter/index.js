@@ -37,28 +37,43 @@ const NewCharacter = () => {
       <S.Form onSubmit={preventSubmit}>
         <S.Text>Começamos com um arquétipo:</S.Text>
         <S.CharacterContainer>
-          {characterOptions.map((character, index) => (
-            <S.CharacterCard
-              onClick={() =>
-                setSelectedCharacter({ character, index: character.id })
-              }
-              selected={selectedCharacter.index === character.id}
-              key={index}>
-              <S.CharacterDescription>
-                {getCharacterDescription(character).map((attribute, index) => (
-                  <S.CharacterAttribute
-                    key={index}
-                    positive={attribute.value === 3}
-                    negative={attribute.value === -3}>
-                    {attribute.description}
-                  </S.CharacterAttribute>
-                ))}
-              </S.CharacterDescription>
-              <div>{`💰 ${character.gold_pieces} moedas de ouro`}</div>
-              <div>{`👤 Já foi ${character.occupation}`}</div>
-            </S.CharacterCard>
-          ))}
+          {characterOptions.map((character, index) => {
+            const characterDescription = getCharacterDescription(character)
+
+            return (
+              <S.CharacterCard
+                onClick={() =>
+                  setSelectedCharacter({ character, index: character.id })
+                }
+                selected={selectedCharacter.index === character.id}
+                key={index}>
+                <S.CharacterDescription>
+                  {characterDescription.map((attribute, index) => (
+                    <S.CharacterAttribute
+                      key={index}
+                      positive={attribute.value === 3}
+                      negative={attribute.value === -3}>
+                      {attribute.description}
+                    </S.CharacterAttribute>
+                  ))}
+                  {_.size(characterDescription) < 6 && (
+                    <div>...de resto é normal</div>
+                  )}
+                </S.CharacterDescription>
+                <div>{`💰 ${character.gold_pieces} moedas de ouro`}</div>
+                <div>{`👤 Já foi ${character.occupation}`}</div>
+              </S.CharacterCard>
+            )
+          })}
         </S.CharacterContainer>
+        <S.AttributeDescription>
+          <div>💪 FORÇA</div>
+          <div>🫀 CONSTITUIÇÃO</div>
+          <div>⚡️ DESTREZA</div>
+          <div>🧠 INTELIGÊNCIA</div>
+          <div>🌏 SABEDORIA</div>
+          <div>👄 CARISMA</div>
+        </S.AttributeDescription>
         <Button>Continuar</Button>
       </S.Form>
     )

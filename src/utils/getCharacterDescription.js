@@ -89,7 +89,7 @@ export default function getCharacterDescription(character) {
         return {
           value,
           attribute,
-          description: `${getIconByAttribute(attribute)} Meio fracote`
+          description: `${getIconByAttribute(attribute)} Um pouco fracote`
         }
       }
 
@@ -104,7 +104,7 @@ export default function getCharacterDescription(character) {
       return {
         value,
         attribute,
-        description: `${getIconByAttribute(attribute)} Meio forte`
+        description: `${getIconByAttribute(attribute)} Um pouco forte`
       }
     }
 
@@ -176,9 +176,7 @@ export default function getCharacterDescription(character) {
       return {
         value,
         attribute,
-        description: `${getIconByAttribute(
-          attribute
-        )} Conhecimento geral razoável`
+        description: `${getIconByAttribute(attribute)} Bom conhecimento geral`
       }
     }
 

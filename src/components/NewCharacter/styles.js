@@ -8,6 +8,10 @@ export const Form = styled.form`
   place-items: center;
   align-content: center;
   gap: 40px;
+
+  @media screen and (max-width: 490px) {
+    gap: 10px;
+  }
 `
 
 export const Text = styled.p`
@@ -98,4 +102,17 @@ export const CharacterDescription = styled.div`
 export const CharacterAttribute = styled.div`
   ${(props) => props.positive && 'color: var(--positive-text)'};
   ${(props) => props.negative && 'color: var(--negative-text)'};
+`
+
+export const AttributeDescription = styled.div`
+  display: flex;
+  gap: 25px;
+  opacity: 0.6;
+
+  @media screen and (max-width: 490px) {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 `
