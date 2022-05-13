@@ -120,7 +120,7 @@ export function CreateCharacterProvider({ children }) {
       ],
       weapons: getInitialEquipment(characterClass),
       notes:
-        '- Kit de Aventura: 1 mochila + 4 tochas + 1 corda 15m + 1 óleo + 1 lanterna + 1 barraca de dormir \n - Kit de Alimentação: 4 cantis de vinho + 4 provisões'
+        '- Kit de Aventura: 1 mochila + 4 tochas + 1 corda 15m + 1 óleo + 1 lanterna + 1 barraca de dormir\n- Kit de Alimentação: 4 cantis de vinho + 4 provisões'
     }
 
     api({ method: 'POST', url: '/characters', data }).then(() => {

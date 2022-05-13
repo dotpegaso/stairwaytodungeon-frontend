@@ -16,7 +16,7 @@ const CharacterInfo = () => {
       <p>{`${parseClass(
         _.get(characterDetails, 'class')
       )} de nível ${getLevelByExperienceCrystals(experienceCrystals)}`}</p>
-      <p>{`💠 ${experienceCrystals} Cristais de XP`}</p>
+      <p>{`💠 ${experienceCrystals} Partidas jogadas`}</p>
       <p>{`💰 ${_.get(characterDetails, 'gold_pieces')} de ouro`}</p>
     </S.Container>
   )
