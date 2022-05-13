@@ -6,8 +6,6 @@ export function UserProvider({ children }) {
   const [discordId, setDiscordId] = useState(null)
   const [avatarHash, setAvatarHash] = useState(null)
 
-  console.log('discordId', discordId)
-
   useEffect(() => {
     const discordId = localStorage.getItem('discord_id')
     const avatarHash = localStorage.getItem('avatar_hash')
