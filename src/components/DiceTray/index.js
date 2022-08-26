@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import _ from 'lodash'
 import confetti from 'canvas-confetti'
 
+import BlurOverlay from '../BlurOverlay'
+
 import { useDice } from '../../context/diceContext'
 import { useCharacter } from '../../context/characterContext'
 
@@ -27,7 +29,7 @@ const DiceTray = () => {
   }
 
   return (
-    <S.Overlay>
+    <BlurOverlay>
       <S.Dicetray>
         <S.Announcement>
           <strong>{playerName}</strong>
@@ -51,7 +53,7 @@ const DiceTray = () => {
           <S.Image src="/images/pepe.png" />
         )}
       </S.Dicetray>
-    </S.Overlay>
+    </BlurOverlay>
   )
 }
 

@@ -61,6 +61,9 @@ export const Name = styled.p`
 export const BigText = styled.p`
   font-size: 24px;
   color: var(--white-90);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `
 
 export const FlexContainer = styled.div`
@@ -80,6 +83,24 @@ export const Badge = styled.p`
   height: 35px;
   display: grid;
   place-items: center;
+
+  ${(props) =>
+    props.fixWidth &&
+    `
+    width: 100px;
+  `}
+
+  ${(props) =>
+    props.fixHalfWidth &&
+    `
+    width: 50px;
+  `}
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: .3;
+  `}
 `
 
 export const Box = styled.div`
@@ -89,4 +110,16 @@ export const Box = styled.div`
   gap: 10px;
   padding: 10px 15px;
   border-radius: 8px;
+`
+
+export const Button = styled.button`
+  background: none;
+  padding: 6px 20px;
+  border: 1px solid;
+  border-radius: var(--border-radius);
+  color: var(--white-90);
+
+  :hover {
+    cursor: pointer;
+  }
 `

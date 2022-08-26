@@ -12,13 +12,13 @@ export default function getThaco({ characterClass, level }) {
   }
 
   function CT(level) {
-    if (level <= 4) {
+    if (level < 5) {
       return 19
     }
-    if (level <= 8) {
+    if (level < 9) {
       return 17
     }
-    if (level <= 12) {
+    if (level < 13) {
       return 15
     }
   }

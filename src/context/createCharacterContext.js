@@ -108,6 +108,7 @@ export function CreateCharacterProvider({ children }) {
       total_hp: hp,
       current_hp: hp,
       discord_id: discordId,
+      experience_crystals: 4,
       items: [
         {
           name: 'Kit de Aventura',

@@ -13,6 +13,8 @@ import getThaco from './getThaco'
 import getArmorClass from './getArmorClass'
 import getAvatar from './getAvatar'
 import parseAttributes from './parseAttributes'
+import getClericalSpells from './getClericalSpells'
+import getClericalSlots from './getClericalSlots'
 
 export {
   api,
@@ -29,5 +31,7 @@ export {
   getThaco,
   getArmorClass,
   getAvatar,
-  parseAttributes
+  parseAttributes,
+  getClericalSpells,
+  getClericalSlots
 }

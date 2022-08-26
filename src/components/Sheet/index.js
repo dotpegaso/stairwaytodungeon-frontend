@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import _ from 'lodash'
 
 import CharacterAttributes from '../CharacterAttributes'
@@ -5,28 +6,74 @@ import CharacterInfo from '../CharacterInfo'
 import DicePool from '../DicePool'
 import DayPeriodBadge from '../DayPeriodBadge'
 import Notes from '../Notes'
+import ModalSheet from '../ModalSheet'
+import ClericalSpells from '../ClericalSpells'
 
 import { useCharacter } from '../../context/characterContext'
 
 import { useGetCombatBonus } from '../../hooks'
 
-import { getThaco, getArmorClass } from '../../utils'
+import {
+  getThaco,
+  getArmorClass,
+  getClericalSpells,
+  getLevelByExperienceCrystals,
+  getHitPointsByClass
+} from '../../utils'
 
 import * as S from './styles'
 
 const Sheet = () => {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+
   const { characterDetails } = useCharacter()
   const { totalMeleeDescription, totalRangedDescription } = useGetCombatBonus()
 
   const weapons = _.defaultTo(_.get(characterDetails, 'weapons'), [])
   const grimoire = _.defaultTo(_.get(characterDetails, 'grimoire'), [])
   const items = _.defaultTo(_.get(characterDetails, 'items'), [])
-  const level = _.defaultTo(_.get(characterDetails, 'level'), 0)
+  const crystals = _.defaultTo(
+    _.get(characterDetails, 'experience_crystals'),
+    0
+  )
   const characterClass = _.get(characterDetails, 'class')
+  const level = getLevelByExperienceCrystals(crystals)
+  const totalHp = getHitPointsByClass(characterClass) * level
+
+  const [currentHp, setCurrentHp] = useState(
+    localStorage.getItem('current_hp') || totalHp
+  )
+
+  const spellList = characterClass === 'cleric' ? getClericalSpells() : []
 
   const remainingHitPoints =
     (100 * _.get(characterDetails, 'current_hp')) /
     _.get(characterDetails, 'total_hp')
+
+  const modalSheetProps = {
+    isBottomSheetOpen,
+    setIsBottomSheetOpen,
+    children: <ClericalSpells list={spellList} characterLevel={level} />
+  }
+
+  function handleHpChange(action) {
+    if (action === 'add' && currentHp + 1 <= totalHp) {
+      setCurrentHp(currentHp + 1)
+      localStorage.setItem('current_hp', currentHp + 1)
+    }
+
+    if (action === 'remove') {
+      setCurrentHp(currentHp - 1)
+      localStorage.setItem('current_hp', currentHp - 1)
+    }
+
+    if (action === 'reset') {
+      setCurrentHp(totalHp)
+      localStorage.setItem('current_hp', totalHp)
+    }
+
+    return null
+  }
 
   return (
     <S.Container opacity={remainingHitPoints}>
@@ -43,6 +90,18 @@ const Sheet = () => {
         <S.BigText>COMBATE</S.BigText>
 
         <S.FlexContainer wrap>
+          <S.Badge onClick={() => handleHpChange('remove')} fixHalfWidth>
+            -
+          </S.Badge>
+          <S.Badge onClick={() => handleHpChange('reset')} fixWidth>{`🫀 HP ${
+            currentHp || totalHp
+          }`}</S.Badge>
+          <S.Badge
+            onClick={() => handleHpChange('add')}
+            disabled={currentHp === totalHp}
+            fixHalfWidth>
+            +
+          </S.Badge>
           <S.Badge>{`🏏 THAC0 ${getThaco({ characterClass, level })}`}</S.Badge>
           <S.Badge>
             {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
@@ -61,12 +120,17 @@ const Sheet = () => {
 
         {!_.isEmpty(weapons) && (
           <>
-            <S.BigText>EQUIPAMENTOS</S.BigText>
+            <S.BigText>
+              EQUIPAMENTOS
+              <S.Button type="button" disabled>
+                Bazar
+              </S.Button>
+            </S.BigText>
 
             <S.FlexContainer>
               {weapons.map((weapon, index) => (
                 <S.Box key={index}>
-                  <p>{`Nome: ${weapon.name}`}</p>
+                  <p>{`${weapon.name}`}</p>
                   {!_.isNil(weapon.damage) && (
                     <p>{`Dano: ${weapon.damage} ${
                       weapon.attack_bonus ? `+ ${weapon.attack_bonus}` : ''
@@ -83,12 +147,19 @@ const Sheet = () => {
 
         {!_.isEmpty(grimoire) && (
           <>
-            <S.BigText>MAGIAS</S.BigText>
+            <S.BigText>
+              {characterClass === 'cleric' ? 'MAGIAS ' : 'GRIMÓRIO '}
+              <S.Button
+                type="button"
+                onClick={() => setIsBottomSheetOpen(true)}>
+                Lista de magias
+              </S.Button>
+            </S.BigText>
 
             <S.FlexContainer>
               {grimoire.map((magic, index) => (
                 <S.Box key={index}>
-                  <p>{`Nome: ${magic.name}`}</p>
+                  <p>{magic.name}</p>
                 </S.Box>
               ))}
             </S.FlexContainer>
@@ -113,6 +184,7 @@ const Sheet = () => {
         <S.BigText>ANOTAÇÕES</S.BigText>
         <Notes />
       </S.Flex>
+      <ModalSheet {...modalSheetProps} />
     </S.Container>
   )
 }
