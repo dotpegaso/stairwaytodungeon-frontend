@@ -6,7 +6,6 @@ import CharacterInfo from '../CharacterInfo'
 import DicePool from '../DicePool'
 import DayPeriodBadge from '../DayPeriodBadge'
 import Notes from '../Notes'
-import ModalSheet from '../ModalSheet'
 import ClericalSpells from '../ClericalSpells'
 
 import { useCharacter } from '../../context/characterContext'
@@ -184,7 +183,6 @@ const Sheet = () => {
         <S.BigText>ANOTAÇÕES</S.BigText>
         <Notes />
       </S.Flex>
-      <ModalSheet {...modalSheetProps} />
     </S.Container>
   )
 }
