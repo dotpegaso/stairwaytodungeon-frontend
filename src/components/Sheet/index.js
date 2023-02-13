@@ -105,12 +105,14 @@ const Sheet = () => {
           <S.Badge>
             {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
           </S.Badge>
-          {!_.isNil(totalMeleeDescription) && (
-            <S.Badge>{totalMeleeDescription}</S.Badge>
-          )}
-          {!_.isNil(totalRangedDescription) && (
-            <S.Badge>{totalRangedDescription}</S.Badge>
-          )}
+          <div>
+            {!_.isNil(totalMeleeDescription) && (
+              <S.Badge>{totalMeleeDescription}</S.Badge>
+            )}
+            {!_.isNil(totalRangedDescription) && (
+              <S.Badge>{totalRangedDescription}</S.Badge>
+            )}
+          </div>
         </S.FlexContainer>
 
         <S.FlexContainer>
@@ -134,9 +136,6 @@ const Sheet = () => {
                     <p>{`Dano: ${weapon.damage} ${
                       weapon.attack_bonus ? `+ ${weapon.attack_bonus}` : ''
                     }`}</p>
-                  )}
-                  {!_.isNil(weapon.defense_bonus) && (
-                    <p>{`Defesa: +${weapon.defense_bonus}`}</p>
                   )}
                 </S.Box>
               ))}

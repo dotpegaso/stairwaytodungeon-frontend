@@ -15,6 +15,8 @@ export function DiceProvider({ children }) {
     setDiceRollSides(null)
     setDiceRollResult(null)
     setSocketIOPlayerName(null)
+    setSocketIOMeleeBonus(null)
+    setSocketIORangedBonus(null)
   }
 
   const value = {
