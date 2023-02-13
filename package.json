@@ -6,6 +6,7 @@
     "axios": "^0.23.0",
     "babel-preset-next": "^1.4.0",
     "canvas-confetti": "^1.4.0",
+    "fix-path": "^3.0.0",
     "framer-motion": "^6.5.1",
     "history": "5.0.0",
     "lodash": "4.17.20",
