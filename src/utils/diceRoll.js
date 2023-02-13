@@ -1,4 +1,4 @@
-const RandomOrg = require('random-org')
+import RandomOrg from 'random-org'
 
 const random = new RandomOrg({
   apiKey: String(process.env.NEXT_PUBLIC_RANDOM_ORG_API_KEY)
