@@ -8,6 +8,26 @@ import { useUser } from './userContext'
 
 const CreateCharacterContext = createContext()
 
+const shield = {
+  name: 'Escudo',
+  type: 'melee',
+  damage: null,
+  attack_bonus: null,
+  defense_bonus: 1,
+  attack_bonus_description: null,
+  defense_bonus_description: null
+}
+
+const morningStar = {
+  name: 'Maça',
+  type: 'melee',
+  damage: '1d6',
+  attack_bonus: null,
+  defense_bonus: null,
+  attack_bonus_description: null,
+  defense_bonus_description: null
+}
+
 const equipmentOptions = [
   {
     name: 'Lança',
@@ -57,16 +77,13 @@ const equipmentOptions = [
 ]
 
 function getInitialEquipment(characterClass) {
-  const weapon =
-    equipmentOptions[Math.floor(Math.random() * equipmentOptions.length)]
-  const shield = {
-    name: 'Escudo',
-    type: 'melee',
-    damage: null,
-    attack_bonus: null,
-    defense_bonus: 1,
-    attack_bonus_description: null,
-    defense_bonus_description: null
+  let weapon
+
+  if (characterClass === 'cleric') {
+    weapon = morningStar
+  } else {
+    weapon =
+      equipmentOptions[Math.floor(Math.random() * equipmentOptions.length)]
   }
 
   const equip = [weapon]
@@ -108,7 +125,7 @@ export function CreateCharacterProvider({ children }) {
       total_hp: hp,
       current_hp: hp,
       discord_id: discordId,
-      experience_crystals: 4,
+      experience_crystals: 12,
       items: [
         {
           name: 'Kit de Aventura',
