@@ -7,6 +7,8 @@ import { useDice } from '../../context/diceContext'
 import { diceRoll } from '../../utils'
 import { socket } from '../../pages/_app'
 
+import { useGetCombatBonus } from '../../hooks'
+
 import * as S from './styles'
 
 const diceIconByValue = {
@@ -22,6 +24,7 @@ const rollDataTimeout = 4600
 
 const Dicepool = () => {
   const { characterDetails } = useCharacter()
+  const { totalMeleeBonus, totalRangedBonus } = useGetCombatBonus()
 
   const {
     diceRollRequested,
@@ -29,6 +32,8 @@ const Dicepool = () => {
     setDiceRollSides,
     setDiceRollResult,
     setSocketIOPlayerName,
+    setSocketIOMeleeBonus,
+    setSocketIORangedBonus,
     resetRollData,
     diceRollSides
   } = useDice()
@@ -38,6 +43,8 @@ const Dicepool = () => {
       setDiceRollRequested(true)
 
       setSocketIOPlayerName(socketIOPlayer.name)
+      setSocketIOMeleeBonus(socketIOPlayer.meleeBonus)
+      setSocketIORangedBonus(socketIOPlayer.rangedBonus)
 
       setDiceRollSides(socketIOPlayer.dice)
       setDiceRollResult(socketIOPlayer.result)
@@ -57,6 +64,8 @@ const Dicepool = () => {
     socket.emit('diceroll', {
       result,
       dice,
+      meleeBonus: totalMeleeBonus,
+      rangedBonus: totalRangedBonus,
       name: _.get(characterDetails, 'name')
     })
 

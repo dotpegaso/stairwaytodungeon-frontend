@@ -7,14 +7,17 @@ import BlurOverlay from '../BlurOverlay'
 import { useDice } from '../../context/diceContext'
 import { useCharacter } from '../../context/characterContext'
 
-import { useGetCombatBonus } from '../../hooks'
-
 import * as S from './styles'
 
 const DiceTray = () => {
   const { characterDetails } = useCharacter()
-  const { socketIOPlayerName, diceRollResult, diceRollSides } = useDice()
-  const { totalMeleeBonus, totalRangedBonus } = useGetCombatBonus()
+  const {
+    socketIOPlayerName,
+    socketIOMeleeBonus,
+    socketIORangedBonus,
+    diceRollResult,
+    diceRollSides
+  } = useDice()
 
   useEffect(() => {
     if (diceRollResult === 20) {
@@ -41,11 +44,11 @@ const DiceTray = () => {
         <S.Announcement diceResult={diceRollResult}>
           <p>{diceRollResult}</p>
           <S.Flex>
-            {totalMeleeBonus !== 0 && (
-              <S.Badge>{`⚔️ ${totalMeleeBonus}`}</S.Badge>
+            {socketIOMeleeBonus !== 0 && (
+              <S.Badge>{`⚔️ ${socketIOMeleeBonus}`}</S.Badge>
             )}
-            {totalRangedBonus !== 0 && (
-              <S.Badge>{`🏹 ${totalRangedBonus}`}</S.Badge>
+            {socketIORangedBonus !== 0 && (
+              <S.Badge>{`🏹 ${socketIORangedBonus}`}</S.Badge>
             )}
           </S.Flex>
         </S.Announcement>
