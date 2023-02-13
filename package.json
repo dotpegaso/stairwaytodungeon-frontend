@@ -16,6 +16,7 @@
     "react-device-detect": "^2.1.2",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.5.1",
+    "react-merge-refs": "^1.1.0",
     "react-modal-sheet": "^1.5.2",
     "react-select": "^5.2.1",
     "react-toastify": "^8.1.0",
