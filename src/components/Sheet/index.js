@@ -105,14 +105,15 @@ const Sheet = () => {
           <S.Badge>
             {`🛡 ${getArmorClass({ characterDetails, weapons })} de armadura`}
           </S.Badge>
-          <div>
-            {!_.isNil(totalMeleeDescription) && (
-              <S.Badge>{totalMeleeDescription}</S.Badge>
-            )}
-            {!_.isNil(totalRangedDescription) && (
-              <S.Badge>{totalRangedDescription}</S.Badge>
-            )}
-          </div>
+        </S.FlexContainer>
+
+        <S.FlexContainer>
+          {!_.isNil(totalMeleeDescription) && (
+            <S.Badge>{totalMeleeDescription}</S.Badge>
+          )}
+          {!_.isNil(totalRangedDescription) && (
+            <S.Badge>{totalRangedDescription}</S.Badge>
+          )}
         </S.FlexContainer>
 
         <S.FlexContainer>
